@@ -14,7 +14,7 @@ go get github.com/ivpusic/neo
 ```
 
 # Documentation
-[Project Site](http://github.com/ivpusic/neo)
+[Project Site](http://ivpusic.github.io/neo)
 
 [API Documentation](http://godoc.org/github.com/ivpusic/neo)
 
