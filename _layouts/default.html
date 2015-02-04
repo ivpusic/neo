@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+{% include head.html %}
+
+<body>
+<a href="https://github.com/ivpusic/neo"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+
+    {% include header.html %}
+
+    <div class="container">
+        <div class="menu">
+            <p>Tutorials</p>
+            <ul class="post-list">
+                <li><a href="{{site.url}}/tutorials/2015/01/22/installing.html">Installing</a></li>
+                <li><a href="{{site.url}}/tutorials/2015/01/22/introduction.html">Introduction</a></li>
+                <li><a href="{{site.url}}/tutorials/2015/01/22/routing.html">Routing</a></li>
+                <li><a href="{{site.url}}/tutorials/2015/01/22/middlewares.html">Middlewares</a></li>
+                <li><a href="{{site.url}}/tutorials/2015/01/22/regions.html">Regions</a></li>
+                <li><a href="{{site.url}}/tutorials/2015/01/22/context.html">Context (neo.Ctx)</a></li>
+                <li><a href="{{site.url}}/tutorials/2015/01/22/static-file-serving.html">Static file serving</a></li>
+                <li><a href="{{site.url}}/tutorials/2015/01/22/templates.html">Templates</a></li>
+                <li><a href="{{site.url}}/tutorials/2015/01/22/assert.html">Assert</a></li>
+                <li><a href="{{site.url}}/tutorials/2015/01/22/events.html">Events</a></li>
+                <li><a href="{{site.url}}/tutorials/2015/01/22/logging.html">Logging</a></li>
+                <li><a href="{{site.url}}/tutorials/2015/01/22/clitool.html">CLI Tool</a></li>
+                <li><a href="{{site.url}}/tutorials/2015/01/22/configuration.html">Configuration</a></li>
+                <li><a href={{site.godoc}}>API Docs</a></li>
+            </ul>
+        </div>
+
+        {{ content }}
+    </div>
+
+    {% include footer.html %}
+
+<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+<script>
+$(function(){
+  $('a').each(function() {
+    if ($(this).prop('href') == window.location.href) {
+      $(this).addClass('active');
+    }
+  });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+# Site settings
+title: Go Web Framework
+email: pusic007@gmail.com
+description: Go Web Framework
+baseurl: "" # the subpath of your site, e.g. /blog/
+godoc: http://localhost:6060/pkg/github.com/ivpusic/neo/
+url: "http://ivpusic.github.io/neo" # the base hostname & protocol for your site
+twitter_username: ivpusic
+github_username:  ivpusic
+
+# Build settings
+markdown: redcarpet
+
+highlighter: pygments
+
+sass:
+  sass_dir: _sass

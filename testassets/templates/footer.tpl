@@ -1,3 +1,0 @@
-{{define "testfooter"}}
-Footer
-{{end}}

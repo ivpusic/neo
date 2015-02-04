@@ -1,0 +1,37 @@
+---
+    layout: default
+---
+
+<section id="main_content">
+<p>Neo is blazing fast Go Web Framework with extremely simple API. </p>
+<p>During development you will enjoy in automatic reruning and recompiling your Neo application when source changes.</p>
+<p>Build your Neo Application in few lines of code.</p>
+
+{% highlight go %}
+package main
+
+import (
+    "github.com/ivpusic/neo"
+)
+
+func main() {
+    app := neo.App()
+
+    app.Get("/", func(this *neo.Ctx) {
+        this.Res.Text("I am Neo Programmer", 200)
+    })
+
+    app.Start()
+}
+{% endhighlight %}
+
+Run it!
+
+{% highlight bash %}
+neo run main.go
+{% endhighlight %}
+
+
+That's it. You did it. Navigate to <a href="http://localhost:3000/">localhost:3000</a> to see result.
+
+</section>

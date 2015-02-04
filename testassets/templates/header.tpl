@@ -1,3 +1,0 @@
-{{define "testheader"}}
-Header
-{{end}}
