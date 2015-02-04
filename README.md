@@ -10,7 +10,7 @@ Go Web Framework
 go get github.com/ivpusic/neo
 
 # CLI tool
-go get github.com/ivpusic/neo
+go get github.com/ivpusic/neo/cmd/neo
 ```
 
 # Documentation
