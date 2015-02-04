@@ -1,5 +1,6 @@
 Neo
 ====
+[![GoDoc](https://godoc.org/github.com/ivpusic/neo?status.svg)](https://godoc.org/github.com/ivpusic/neo)
 
 Go Web Framework
 
