@@ -1,0 +1,28 @@
+#
+# settings related to recompiling and reruning app when source changes
+#
+[hotreload]
+
+# files/directories to watch for changes
+watch = ["."]
+
+# files/directories to ignore
+ignore = []
+
+#
+# general application settings
+#
+[app]
+# on which address to run application
+addr = ":3000"
+
+	[app.logger]
+	level = "DEBUG"
+	name = "application"
+
+#
+# neo settings
+#
+[neo]
+	[neo.logger]
+	level = "INFO"

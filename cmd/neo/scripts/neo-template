@@ -1,0 +1,50 @@
+#!/bin/bash
+
+NEO_ROOT="$GOPATH/src/github.com/ivpusic/neo"
+NEO_TEMPLATES="$NEO_ROOT/cmd/neo/templates"
+
+if [ -d $1 ]; then
+	echo "Directory $1 already exists!"
+	exit 0
+fi
+
+mkdir $1
+pushd $1 >> /dev/null
+
+#
+#  server
+#
+echo 'Preparing Neo Application'
+
+cat << EOF > main.go
+package main
+
+import (
+	"github.com/ivpusic/golog"
+	"github.com/ivpusic/neo"
+	"github.com/ivpusic/neo/middlewares/logger"
+)
+
+var (
+	log = golog.GetLogger("application")
+)
+
+func main() {
+	log.Info("Regards from Neo")
+
+	app := neo.App()
+	app.Use(logger.Log)
+
+	app.Get("/", func(this *neo.Ctx) {
+		this.Res.Text("Works!", 200)
+	})
+
+	app.Start()
+}
+EOF
+
+cp $NEO_TEMPLATES/config.toml .
+
+popd >> /dev/null
+
+echo "Done! Enter '$1' and type 'neo run main.go' to run your app."

@@ -1,0 +1,55 @@
+#!/bin/bash
+
+NEO_ROOT="$GOPATH/src/github.com/ivpusic/neo"
+NEO_TEMPLATES="$NEO_ROOT/cmd/neo/templates"
+
+mkdir $1
+
+#
+# client
+#
+echo 'Preparing Angular Application'
+
+git clone git@github.com:angular/angular-seed.git $1/client
+pushd $1/client >> /dev/null
+echo 'Installing Angular Application dependencies'
+npm install
+popd >> /dev/null
+
+#
+#  server
+#
+echo 'Preparing Neo Application'
+
+mkdir $1/server
+pushd $1/server >> /dev/null
+
+cat << EOF > main.go
+package main
+
+import (
+	"github.com/ivpusic/golog"
+	"github.com/ivpusic/neo"
+	"github.com/ivpusic/neo/middlewares/logger"
+)
+
+var (
+	log = golog.GetLogger("application")
+)
+
+func main() {
+	log.Info("Regards from Neo")
+
+	app := neo.App()
+	app.Use(logger.Log)
+
+	app.Serve("/", "../client/app/")
+	app.Start()
+}
+EOF
+
+cp $NEO_TEMPLATES/config.toml .
+
+popd >> /dev/null
+
+echo "Done! Navigate to $1/server and type 'neo run main.go' to run your app."
