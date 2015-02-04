@@ -15,7 +15,7 @@ It can work on multiple levels. You can define middlewares which will be execute
 Let's see how we can define middleware which is called before all routes.
 
 ```Go
-app.Use(func(this *neo.Ctx, next neo.Next) {
+app.Use(func(ctx *neo.Ctx, next neo.Next) {
     // middleware implementation
 })
 ```
@@ -33,14 +33,14 @@ Use case can be checking if user is logged in for example. If user is logged in 
 Also good usecase can be logging all traffic on your Web Application.
 
 ```Go
-app.Use(func (this *neo.Ctx, next neo.Next) {
+app.Use(func (ctx *neo.Ctx, next neo.Next) {
     start = time.Now()
-    fmt.Printf("--> [Req] %s to %s", this.Req.Method, this.Req.URL.Path)
+    fmt.Printf("--> [Req] %s to %s", ctx.Req.Method, ctx.Req.URL.Path)
 
     next()
 
     elapsed := float64(time.Now().Sub(start) / time.Millisecond)
-    fmt.Printf("<-- [Res] (%d) %s to %s Took %vms", this.Res.Status, this.Req.Method, this.Req.URL.Path, elapsed)
+    fmt.Printf("<-- [Res] (%d) %s to %s Took %vms", ctx.Res.Status, ctx.Req.Method, ctx.Req.URL.Path, elapsed)
 })
 ```
 
@@ -50,15 +50,15 @@ As we mentioned before we can define middleware for single route. Good usecase f
 Simple example is here:
 
 ```Go
-route := app.Get("/some/protected/route", func(this *neo.Ctx) {
+route := app.Get("/some/protected/route", func(ctx *neo.Ctx) {
     // implementation
 })
 
-route.Use(func(this *neo.Ctx, next neo.Next) {
+route.Use(func(ctx *neo.Ctx, next neo.Next) {
     if authorized {
         next()
     } else {
-        this.Res.Status = 401
+        ctx.Res.Status = 401
     }
 })
 ```
