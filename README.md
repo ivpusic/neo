@@ -1,5 +1,6 @@
 Neo
 ====
+[![Build Status](https://travis-ci.org/ivpusic/neo.svg?branch=master)](https://travis-ci.org/ivpusic/neo)
 [![GoDoc](https://godoc.org/github.com/ivpusic/neo?status.svg)](https://godoc.org/github.com/ivpusic/neo)
 
 Go Web Framework
