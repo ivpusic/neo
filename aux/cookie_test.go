@@ -14,15 +14,15 @@ func makeTestCookie(key, value string) *http.Cookie {
 	}
 }
 
-func makeTestResCookies() *ResCookie {
-	return &ResCookie{
+func makeTestResCookies() *Cookie {
+	return &Cookie{
 		"key1": makeTestCookie("key1", "value1"),
 		"key2": makeTestCookie("key2", "value2"),
 	}
 }
 
 func TestReqCookieGet(t *testing.T) {
-	cookies := ReqCookie{
+	cookies := Cookie{
 		"key": makeTestCookie("key", "value"),
 	}
 

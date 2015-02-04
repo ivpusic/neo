@@ -29,17 +29,21 @@ func TestEmit(t *testing.T) {
 	ebus := EBus{}
 	ebus.InitEBus()
 	counter := 0
+	ch := make(chan int)
 
 	ebus.On("test", func(data interface{}) {
 		counter += data.(int)
+		ch <- 1
 	})
 
 	ebus.Emit("test", 10)
+	<-ch
 	assert.Exactly(t, 10, counter)
 
 	ebus.Emit("unknown", 10)
 	assert.Exactly(t, 10, counter)
 
 	ebus.Emit("test", 5)
+	<-ch
 	assert.Exactly(t, 15, counter)
 }
