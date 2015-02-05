@@ -21,7 +21,7 @@ app.Use(func(ctx *neo.Ctx, next neo.Next) {
 ```
 This piece of code will be called every time when you call something on your Web Application.
 
-Middleware can be every function with **func(*neo.Ctx, neo.Next)** signature. First parameter is the same as in route, and the second one is interesting. It is actually function without any parameters, and if you call it, you will basically invoke rest of your application stack. If you don't call it, then Neo will assume that request lifetime should end, and it will return result to client.
+Middleware can be every function with **func(*neo.Ctx, neo.Next)** signature. First parameter is the same as in route, and the second one is interesting. It is actually a function without any parameters, and if you call it, you will basically invoke rest of your application stack. If you don't call it, then Neo will assume that request lifetime should end, and it will return result to client.
 
 All code after your ``next`` function call will be invoked once after all middlewares bellow this one and route handler are invoked.
 
