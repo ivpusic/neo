@@ -87,6 +87,7 @@ func TestJsonResponse(t *testing.T) {
 	server := getTestApp(t)
 	server.Test("GET", "/json").
 		Check().
+		HasHeader("Content-Type", "application/json").
 		HasStatus(200).
 		HasJson(&testPerson{"Some", 30})
 }
@@ -95,6 +96,7 @@ func TestXmlResponse(t *testing.T) {
 	server := getTestApp(t)
 	server.Test("GET", "/xml").
 		Check().
+		HasHeader("Content-Type", "application/xml").
 		HasStatus(200).
 		HasXml(&testPerson{"Some", 30})
 }
@@ -131,6 +133,7 @@ func TestTextResponse(t *testing.T) {
 	server := getTestApp(t)
 	server.Test("GET", "/text").
 		Check().
+		HasHeader("Content-Type", "text/plain").
 		HasStatus(200).
 		Cb(func(response *http.Response) {
 		body, err := ioutil.ReadAll(response.Body)
