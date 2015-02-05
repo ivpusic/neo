@@ -33,14 +33,14 @@ app := neo.App()
 You will use ``app`` variable to access many things from Neo. One of most important things in Neo is declaring routes. You define new route by calling corresponding function and by passing path and route handler implementation.
 
 ```Go
-app.Get("/", func(this *neo.Ctx) {
-    this.Res.Text("I am Neo Programmer", 200)
+app.Get("/", func(ctx *neo.Ctx) {
+    ctx.Res.Text("I am Neo Programmer", 200)
 })
 ```
 If you want to declare ``POST`` route to for example ``/some/route`` route, you can use something like this:
 
 ```Go
-app.Post("/some/route", func(this *neo.Ctx) {
+app.Post("/some/route", func(ctx *neo.Ctx) {
     // your route handler implementation
 })
 ```
@@ -63,8 +63,8 @@ import (
 func main() {
     app := neo.App()
 
-    app.Get("/", func(this *neo.Ctx) {
-        this.Res.Text("I am Neo Programmer", 200)
+    app.Get("/", func(ctx *neo.Ctx) {
+        ctx.Res.Text("I am Neo Programmer", 200)
     })
 
     app.Start()

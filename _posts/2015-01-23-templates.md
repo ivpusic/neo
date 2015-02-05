@@ -61,8 +61,8 @@ As you can see you can provide multiple paths where your templates are located.
 Then in one of your route handlers you have to call template rendering in order to make HTML and return it to user.
 
 ```Go
-app.Get("/", func(this neo.Ctx) {
-    this.Res.Tpl("index", nil)
+app.Get("/", func(ctx neo.Ctx) {
+    ctx.Res.Tpl("index", nil)
 })
 ```
 
@@ -70,7 +70,7 @@ Second parameter of ``Tpl`` function is data which will be passed into template.
 
 ```Go
 data := Person{"Some", "Person"}
-this.Res.Tpl("index", data)
+ctx.Res.Tpl("index", data)
 ```
 
 And that's it basically about templates.
