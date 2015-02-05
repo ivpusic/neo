@@ -60,7 +60,6 @@ func (a *Application) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	request := ctx.Req
 	response := ctx.Res
 
-	defer ctx.Emit("end", nil)
 	defer response.flush()
 
 	///////////////////////////////////////////////////////////////////
