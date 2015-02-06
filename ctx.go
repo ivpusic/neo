@@ -1,7 +1,7 @@
 package neo
 
 import (
-	"github.com/ivpusic/neo/aux"
+	"github.com/ivpusic/neo/ebus"
 	"net/http"
 )
 
@@ -33,8 +33,7 @@ func (r CtxData) Del(key string) {
 
 // Representing context for this request.
 type Ctx struct {
-	aux.EBus
-	ebus *aux.EBus
+	ebus.EBus
 
 	// Wrapped http.Request object.
 	Req *Request

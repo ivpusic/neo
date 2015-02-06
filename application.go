@@ -2,14 +2,14 @@ package neo
 
 import (
 	"github.com/ivpusic/golog"
-	"github.com/ivpusic/neo/aux"
+	"github.com/ivpusic/neo/ebus"
 	"net/http"
 )
 
 // Representing Neo application instance
 type Application struct {
 	// Event emmiter/receiver
-	aux.EBus
+	ebus.EBus
 	router
 	static *Static
 

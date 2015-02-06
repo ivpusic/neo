@@ -3,7 +3,6 @@ package neo
 import (
 	"encoding/json"
 	"encoding/xml"
-	"github.com/ivpusic/neo/aux"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -14,7 +13,7 @@ type Response struct {
 	Status  int
 	Writer  http.ResponseWriter
 	request *http.Request
-	Cookie  aux.Cookie
+	Cookie  Cookie
 	data    []byte
 	// defer file sending
 	file       string
@@ -27,7 +26,7 @@ func makeResponse(request *http.Request, w http.ResponseWriter) *Response {
 	response := &Response{
 		request: request,
 		Writer:  w,
-		Cookie:  aux.Cookie{},
+		Cookie:  Cookie{},
 		Header:  w.Header(),
 	}
 
