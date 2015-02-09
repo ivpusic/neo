@@ -133,7 +133,7 @@ func TestTextResponse(t *testing.T) {
 	server := getTestApp(t)
 	server.Test("GET", "/text").
 		Check().
-		HasHeader("Content-Type", "text/plain").
+		HasHeader("Content-Type", "text/plain; charset=utf-8").
 		HasStatus(200).
 		Cb(func(response *http.Response) {
 		body, err := ioutil.ReadAll(response.Body)
