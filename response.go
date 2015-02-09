@@ -46,7 +46,7 @@ func (r *Response) Json(obj interface{}, status int) {
 		return
 	}
 
-	r.Header.Add("Content-Type", "application/json")
+	r.Header.Set("Content-Type", "application/json")
 	r.Raw(res, status)
 }
 
@@ -59,13 +59,12 @@ func (r *Response) Xml(obj interface{}, status int) {
 		return
 	}
 
-	r.Header.Add("Content-Type", "application/xml")
+	r.Header.Set("Content-Type", "application/xml")
 	r.Raw(res, status)
 }
 
 // Will send provided Text to client.
 func (r *Response) Text(text string, status int) {
-	r.Header.Add("Content-Type", "text/plain")
 	r.Raw([]byte(text), status)
 }
 
