@@ -42,8 +42,8 @@ func (m *methods) init() *methods {
 
 func (m *methods) add(path string, fn handler, method string) *Route {
 	route := Route{&interceptor{[]appliable{}}, fn, nil}
-	regex := urlregex.Pattern(path)
-	m.routes[method][*regex] = route
+	m.routes[method][urlregex.Pattern(path)] = route
+
 	return &route
 }
 

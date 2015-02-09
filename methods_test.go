@@ -16,20 +16,20 @@ func TestMethods(t *testing.T) {
 	fn := func(this *Ctx) {}
 
 	m.Get("/some", fn)
-	assert.NotNil(t, m.routes["GET"][*urlregex.Pattern("/some")])
+	assert.NotNil(t, m.routes["GET"][urlregex.Pattern("/some")])
 
 	m.Post("/some", fn)
-	assert.NotNil(t, m.routes["POST"][*urlregex.Pattern("/some")])
+	assert.NotNil(t, m.routes["POST"][urlregex.Pattern("/some")])
 
 	m.Put("/some", fn)
-	assert.NotNil(t, m.routes["PUT"][*urlregex.Pattern("/some")])
+	assert.NotNil(t, m.routes["PUT"][urlregex.Pattern("/some")])
 
 	m.Delete("/some", fn)
-	assert.NotNil(t, m.routes["DELETE"][*urlregex.Pattern("/some")])
+	assert.NotNil(t, m.routes["DELETE"][urlregex.Pattern("/some")])
 
 	m.Options("/some", fn)
-	assert.NotNil(t, m.routes["OPTIONS"][*urlregex.Pattern("/some")])
+	assert.NotNil(t, m.routes["OPTIONS"][urlregex.Pattern("/some")])
 
 	m.Head("/some", fn)
-	assert.NotNil(t, m.routes["HEAD"][*urlregex.Pattern("/some")])
+	assert.NotNil(t, m.routes["HEAD"][urlregex.Pattern("/some")])
 }

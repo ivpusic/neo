@@ -97,7 +97,7 @@ func (a *Application) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 
-		log.Debugf("result not found in static")
+		log.Debug("result not found in static")
 	}
 
 	///////////////////////////////////////////////////////////////////
@@ -115,7 +115,6 @@ func (a *Application) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
 		compose(merge(a.middlewares, []appliable{handler(h)}))(ctx)
 	} else {
-		log.Debugf("route %s found", req.URL.Path)
 		route.fnChain(ctx)
 	}
 }

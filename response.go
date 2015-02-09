@@ -149,8 +149,6 @@ func (r *Response) skipFlush() {
 
 // Write result to ResponseWriter.
 func (r *Response) flush() {
-	log.Debug("flushing...")
-
 	if r._skipFlush {
 		log.Debug("Already sent. Skipping flushing")
 		return

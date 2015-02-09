@@ -3,13 +3,13 @@ package neo
 type Next func()
 
 type appliable interface {
-	apply(ctx *Ctx, fns []appliable)
+	apply(ctx *Ctx, fns []appliable, current int)
 }
 
 // Composing multiple middlewares into one chained function.
 func compose(fns []appliable) func(*Ctx) {
 	return func(ctx *Ctx) {
-		fns[0].apply(ctx, fns[1:])
+		fns[0].apply(ctx, fns, 0)
 	}
 }
 
@@ -17,10 +17,11 @@ func compose(fns []appliable) func(*Ctx) {
 // It accepts Neo Context and Next function for calling next middleware in chain.
 type middleware func(*Ctx, Next)
 
-func (m middleware) apply(ctx *Ctx, fns []appliable) {
+func (m middleware) apply(ctx *Ctx, fns []appliable, current int) {
 	m(ctx, func() {
-		if len(fns) > 0 {
-			fns[0].apply(ctx, fns[1:])
+		current++
+		if len(fns) > current {
+			fns[current].apply(ctx, fns, current)
 		}
 	})
 }

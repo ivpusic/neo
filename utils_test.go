@@ -10,7 +10,7 @@ type testAppliable struct {
 	id int
 }
 
-func (t *testAppliable) apply(ctx *Ctx, fns []appliable) {
+func (t *testAppliable) apply(ctx *Ctx, fns []appliable, current int) {
 }
 
 func TestIsDirectory(t *testing.T) {

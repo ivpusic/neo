@@ -12,11 +12,12 @@ import (
 type handler func(*Ctx)
 
 // composing route with middlewares. Will be called from ``compose`` fn.
-func (h handler) apply(ctx *Ctx, fns []appliable) {
+func (h handler) apply(ctx *Ctx, fns []appliable, current int) {
 	h(ctx)
 
-	if len(fns) > 0 {
-		fns[0].apply(ctx, fns[1:])
+	current++
+	if len(fns) > current {
+		fns[current].apply(ctx, fns, current)
 	}
 }
 
