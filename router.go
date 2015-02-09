@@ -125,13 +125,12 @@ func (router *router) match(req *Request) (*Route, error) {
 	method := req.Method
 	path := req.URL.Path
 
-	for k, _ := range router.routes[method] {
+	for k, v := range router.routes[method] {
 		params, err := k.Match(path)
 
 		if err == nil {
-			route := router.routes[method][k]
 			req.Params = params
-			return &route, nil
+			return &v, nil
 		}
 	}
 
