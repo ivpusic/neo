@@ -1,9 +1,6 @@
 package neo
 
-import (
-	"github.com/ivpusic/golog"
-	"os"
-)
+import "github.com/ivpusic/golog"
 
 // Type which will be passed as argument of ``panic`` if Neo assertion fails.
 type NeoAssertError struct {
@@ -24,25 +21,10 @@ func init() {
 }
 
 // Getting Neo Application instance. This is singleton function.
-// First time when we call this method function will try to parse configuration for Neo application.
-// It will look for configuration file provided by ``--config`` CLI argument (if exist).
 func App() *Application {
 	if app == nil {
-		confFile := ""
-
-		for i, arg := range os.Args {
-			if arg == "--config" {
-				if len(arg) > i+1 {
-					confFile = os.Args[i+1]
-					break
-				}
-			}
-		}
-
-		app = &Application{}
-		app.init(confFile)
+		return &Application{}
 	}
-
 	return app
 }
 
