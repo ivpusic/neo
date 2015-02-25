@@ -63,14 +63,14 @@ func (c *Conf) loadDefaults() {
 
 // Will try to parse TOML configuration file.
 func (c *Conf) Parse(path string) {
-	c.loadDefaults()
-
 	if path == "" {
-		log.Warn("Configuration file not provided!")
+		log.Warn("Configuration file not provided! Using defaults.")
+		c.loadDefaults()
 		return
 	}
 
 	if _, err := toml.DecodeFile(path, c); err != nil {
+		log.Error("An error occured while parsing config file, panicking!")
 		panic(err)
 	}
 }
