@@ -23,7 +23,9 @@ func init() {
 // Getting Neo Application instance. This is singleton function.
 func App() *Application {
 	if app == nil {
-		return &Application{}
+		app := &Application{}
+		app.init()
+		return app
 	}
 	return app
 }

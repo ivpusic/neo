@@ -26,7 +26,10 @@ type Application struct {
 func (a *Application) init() {
 	a.InitEBus()
 	a.initRouter()
+}
 
+// startLoggers should run after configuration file is parsed.
+func (a *Application) startLoggers() {
 	// neo logger
 	lvl, err := parseLogLevel(a.Conf.Neo.Logger.Level)
 	if err != nil {
@@ -122,8 +125,9 @@ func (a *Application) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
 // Starting application instance. This will run application on port defined by configuration.
 func (a *Application) Start() {
-	// load the configuration file provided by --config flag if the user hasn't
-	// set the config file via app.SetConfigFile() method.
+	// if configuration hasn't been loaded by user via SetConfigFile()
+	// attempt to load a config file provided by --config flag.
+	// if flag is not set a default config will be loaded
 	if a.Conf == nil {
 		confFile := ""
 
@@ -138,8 +142,8 @@ func (a *Application) Start() {
 		a.SetConfigFile(confFile)
 	}
 
-	// initialize the app
-	a.init()
+	// start loggers
+	a.startLoggers()
 
 	a.flush()
 
@@ -182,8 +186,6 @@ func (a *Application) Region() *Region {
 
 // SetConfigFile lets you optionally set custom config file path.
 func (a *Application) SetConfigFile(confFile string) {
-	if a.Conf == nil {
-		a.Conf = new(Conf)
-		a.Conf.Parse(confFile)
-	}
+	a.Conf = new(Conf)
+	a.Conf.Parse(confFile)
 }
