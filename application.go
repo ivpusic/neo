@@ -1,9 +1,11 @@
 package neo
 
 import (
+	"net/http"
+	"os"
+
 	"github.com/ivpusic/golog"
 	"github.com/ivpusic/neo/ebus"
-	"net/http"
 )
 
 // Representing Neo application instance
@@ -21,10 +23,9 @@ type Application struct {
 }
 
 // Application initialization.
-func (a *Application) init(confFile string) {
+func (a *Application) init() {
 	a.InitEBus()
 	a.initRouter()
-	a.initConf(confFile)
 
 	// neo logger
 	lvl, err := parseLogLevel(a.Conf.Neo.Logger.Level)
@@ -121,6 +122,25 @@ func (a *Application) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
 // Starting application instance. This will run application on port defined by configuration.
 func (a *Application) Start() {
+	// load the configuration file provided by --config flag if the user hasn't
+	// set the config file via app.SetConfigFile() method.
+	if a.Conf == nil {
+		confFile := ""
+
+		for i, arg := range os.Args {
+			if arg == "--config" {
+				if len(arg) > i+1 {
+					confFile = os.Args[i+1]
+					break
+				}
+			}
+		}
+		a.SetConfigFile(confFile)
+	}
+
+	// initialize the app
+	a.init()
+
 	a.flush()
 
 	log.Infof("Starting application on address `%s`", a.Conf.App.Addr)
@@ -160,9 +180,8 @@ func (a *Application) Region() *Region {
 // Configuration
 ///////////////////////////////////////////////////////////////////
 
-// Parsing configuration file for this application instance.
-// If configuration file is not provided, then application will use default settings.
-func (a *Application) initConf(confFile string) {
+// SetConfigFile lets you optionally set custom config file path.
+func (a *Application) SetConfigFile(confFile string) {
 	if a.Conf == nil {
 		a.Conf = new(Conf)
 		a.Conf.Parse(confFile)
