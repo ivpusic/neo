@@ -1,6 +1,7 @@
 package neo
 
 import (
+	"errors"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -37,5 +38,16 @@ func TestAssertNotNil(t *testing.T) {
 
 	assert.Panics(t, func() {
 		AssertNotNil(nil, 200, []byte("some message"))
+	})
+}
+
+func TestAssertNilErr(t *testing.T) {
+	assert.NotPanics(t, func() {
+		AssertNilErr(nil, 200)
+	})
+
+	assert.Panics(t, func() {
+		err := errors.New("Some error")
+		AssertNilErr(err, 500)
 	})
 }

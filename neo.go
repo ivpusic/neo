@@ -76,3 +76,10 @@ func AssertNotNil(obj interface{}, status int, message []byte) {
 		Assert(false, status, message)
 	}
 }
+
+// If passed error is not nil, then ``err.Error()`` with provided status will be returned to client
+func AssertNilErr(err error, status int) {
+	if err != nil {
+		Assert(false, status, []byte(err.Error()))
+	}
+}
