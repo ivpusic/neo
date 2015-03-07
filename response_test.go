@@ -65,11 +65,38 @@ func getTestApp(t *testing.T) *httpcheck.Checker {
 		Assert(false, 400, []byte("some error"))
 	})
 
+	app.Options("/some/*/:path", func(this *Ctx) {
+		this.Res.Text(this.Req.Params.Get("path"), 200)
+	})
+
+	app.Options("*", func(this *Ctx) {
+		this.Res.Text("allok", 200)
+	})
+
 	app.Serve("/assets", "./testassets")
 
 	app.flush()
 
 	return httpcheck.New(t, app, ":4449")
+}
+
+func TestWildcard(t *testing.T) {
+	server := getTestApp(t)
+	server.Test("OPTIONS", "/some/blabla/value").Check().
+		HasStatus(200).
+		Cb(func(response *http.Response) {
+		body, err := ioutil.ReadAll(response.Body)
+		assert.Nil(t, err)
+		assert.Equal(t, "value", string(body))
+	})
+
+	server.Test("OPTIONS", "/blabla").Check().
+		HasStatus(200).
+		Cb(func(response *http.Response) {
+		body, err := ioutil.ReadAll(response.Body)
+		assert.Nil(t, err)
+		assert.Equal(t, "allok", string(body))
+	})
 }
 
 func TestStatus(t *testing.T) {
