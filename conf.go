@@ -44,6 +44,7 @@ type NeoSettings struct {
 // `Global` section
 ///////////////////////////////////////////////////////////////////
 
+// Neo Application configuration
 type Conf struct {
 	Hotreload HotReload
 	App       ApplicationSettings

@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/ivpusic/golog"
 	"github.com/ivpusic/neo"
+	"github.com/ivpusic/neo/cmd/neo/scripts"
 	"gopkg.in/alecthomas/kingpin.v1"
 	"os"
 	"path"
@@ -118,23 +119,33 @@ func handleRunCommand() {
 ///////////////////////////////////////////////////////////////////
 
 func handleNewCommand() {
-	neoCliRoot := os.Getenv("GOPATH") + "/src/github.com/ivpusic/neo/cmd/neo"
+	currentLocation, err := os.Getwd()
+	if err != nil {
+		logger.Error(err.Error())
+		os.Exit(0)
+	}
+	projectLocation := currentLocation + "/" + *projectName
+
+	var template scripts.Template = nil
 
 	if len(*templateName) == 0 {
 		logger.Info("Creating Neo project")
-		runCmd(neoCliRoot+"/scripts/neo-template", []string{*projectName})
-
+		template = &scripts.NeoTemplate{}
 	} else {
 		switch *templateName {
 		case "angular":
 			logger.Info("Creating Neo Angular project")
-			runCmd(neoCliRoot+"/scripts/angular-template", []string{*projectName})
+			template = &scripts.AngularTemplate{}
 		case "html":
 			logger.Info("Creating Neo HTML project")
-			runCmd(neoCliRoot+"/scripts/neo-html-template", []string{*projectName})
-		default:
-			logger.Errorf("Unkonown template %s!", *projectName)
+			template = &scripts.NeoHtmlTemplate{}
 		}
+	}
+
+	if template == nil {
+		logger.Errorf("Unkonown template %s!", *templateName)
+	} else {
+		template.Build(projectLocation)
 	}
 }
 
