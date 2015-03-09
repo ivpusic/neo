@@ -28,7 +28,7 @@ func (a *AngularTemplate) Build(location string) {
 
 	// clone angular template
 	logger.Info("Preparing angular template")
-	err := pipe(exec.Command("git", "clone", "git@github.com:angular/angular-seed.git", location+"/client")).Run()
+	err := pipe(exec.Command("git", "clone", "https://github.com/angular/angular-seed.git", location+"/client")).Run()
 	checkErr(err)
 
 	// install angular deps
