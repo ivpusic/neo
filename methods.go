@@ -21,7 +21,7 @@ var methodsSlice = []string{GET, POST, PUT, DELETE, OPTIONS, HEAD}
 // Map has two levels. First level is HTTP method, and second level is regex and it's actual route instance.
 // So once row in this map could be:
 // route := routemap["GET"]["^\/$"], where "^\/$" is actual UrlRegex instance.
-type routemap map[string]map[urlregex.UrlRegex]Route
+type routemap map[string][]Route
 
 type methods struct {
 	routes routemap
@@ -29,20 +29,20 @@ type methods struct {
 
 func (m *methods) init() *methods {
 	m.routes = routemap{
-		GET:     make(map[urlregex.UrlRegex]Route),
-		POST:    make(map[urlregex.UrlRegex]Route),
-		PUT:     make(map[urlregex.UrlRegex]Route),
-		DELETE:  make(map[urlregex.UrlRegex]Route),
-		OPTIONS: make(map[urlregex.UrlRegex]Route),
-		HEAD:    make(map[urlregex.UrlRegex]Route),
+		GET:     []Route{},
+		POST:    []Route{},
+		PUT:     []Route{},
+		DELETE:  []Route{},
+		OPTIONS: []Route{},
+		HEAD:    []Route{},
 	}
 
 	return m
 }
 
 func (m *methods) add(path string, fn handler, method string) *Route {
-	route := Route{&interceptor{[]appliable{}}, fn, nil}
-	m.routes[method][urlregex.Pattern(path)] = route
+	route := Route{&interceptor{[]appliable{}}, fn, urlregex.Pattern(path), nil}
+	m.routes[method] = append(m.routes[method], route)
 
 	return &route
 }

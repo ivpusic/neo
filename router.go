@@ -3,6 +3,7 @@ package neo
 import (
 	"container/list"
 	"errors"
+	"github.com/ivpusic/urlregex"
 )
 
 ///////////////////////////////////////////////////////////////////
@@ -24,6 +25,7 @@ func (h handler) apply(ctx *Ctx, fns []appliable, current int) {
 type Route struct {
 	*interceptor
 	fn      handler
+	regex   urlregex.UrlRegex
 	fnChain func(*Ctx)
 }
 
@@ -66,8 +68,8 @@ func (r *router) makeRegion() *Region {
 // also cleans up intrnal structures
 func (router *router) flush() {
 	// first copy all middlewares to top-level routes
-	for method, routesmap := range router.routes {
-		for path, route := range routesmap {
+	for method, routesSlice := range router.routes {
+		for i, route := range routesSlice {
 
 			route.fnChain = compose(merge(
 				router.middlewares,
@@ -75,7 +77,7 @@ func (router *router) flush() {
 				[]appliable{route.fn},
 			))
 
-			router.routes[method][path] = route
+			router.routes[method][i] = route
 		}
 	}
 
@@ -91,8 +93,8 @@ func (router *router) flush() {
 			continue
 		}
 
-		for method, routesmap := range region.routes {
-			for path, route := range routesmap {
+		for method, routesSlice := range region.routes {
+			for _, route := range routesSlice {
 
 				route.fnChain = compose(merge(
 					router.middlewares,
@@ -101,11 +103,7 @@ func (router *router) flush() {
 					[]appliable{route.fn},
 				))
 
-				router.routes[method][path] = route
-
-				// remove route from region
-				// we are doing this because route reference is now in top level
-				delete(region.routes[method], path)
+				router.routes[method] = append(router.routes[method], route)
 			}
 
 			// remove method key from region (GET, POST,...)
@@ -126,12 +124,12 @@ func (router *router) match(req *Request) (*Route, error) {
 	method := req.Method
 	path := req.URL.Path
 
-	for k, v := range router.routes[method] {
-		params, err := k.Match(path)
+	for _, route := range router.routes[method] {
+		params, err := route.regex.Match(path)
 
 		if err == nil {
 			req.Params = params
-			return &v, nil
+			return &route, nil
 		}
 	}
 
