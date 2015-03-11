@@ -11,23 +11,21 @@ import (
 // Server response representation.
 type Response struct {
 	Status  int
-	Writer  http.ResponseWriter
+	writer  http.ResponseWriter
 	request *http.Request
 	Cookie  Cookie
 	data    []byte
 	// defer file sending
 	file       string
 	_skipFlush bool
-	Header     http.Header
 }
 
 // making response representation
 func makeResponse(request *http.Request, w http.ResponseWriter) *Response {
 	response := &Response{
 		request: request,
-		Writer:  w,
+		writer:  w,
 		Cookie:  Cookie{},
-		Header:  w.Header(),
 	}
 
 	return response
@@ -46,7 +44,7 @@ func (r *Response) Json(obj interface{}, status int) {
 		return
 	}
 
-	r.Header.Set("Content-Type", "application/json")
+	r.writer.Header().Set("Content-Type", "application/json")
 	r.Raw(res, status)
 }
 
@@ -59,7 +57,7 @@ func (r *Response) Xml(obj interface{}, status int) {
 		return
 	}
 
-	r.Header.Set("Content-Type", "application/xml")
+	r.writer.Header().Set("Content-Type", "application/xml")
 	r.Raw(res, status)
 }
 
@@ -73,7 +71,7 @@ func (r *Response) Text(text string, status int) {
 func (r *Response) Tpl(name string, data interface{}) {
 	log.Infof("Rendering template %s", name)
 
-	err := renderTpl(r.Writer, name, data)
+	err := renderTpl(r.writer, name, data)
 	if err != nil {
 		log.Error(err.Error())
 		r.Status = http.StatusNotFound
@@ -88,6 +86,21 @@ func (r *Response) Tpl(name string, data interface{}) {
 func (r *Response) Raw(data []byte, status int) {
 	r.Status = status
 	r.data = data
+}
+
+// Write raw response. Implements ResponseWriter.Write.
+func (r *Response) Write(b []byte) (int, error) {
+	return r.writer.Write(b)
+}
+
+// Get Header. Implements ResponseWriter.Header.
+func (r *Response) Header() http.Header {
+	return r.writer.Header()
+}
+
+// Write Header. Implements ResponseWriter.WriterHeader.
+func (r *Response) WriteHeader(s int) {
+	r.writer.WriteHeader(s)
 }
 
 // Checking if file exist.
@@ -123,7 +136,7 @@ func (r *Response) serveFile(file string) {
 	log.Debugf("serving file %s", file)
 
 	r.Status = http.StatusOK
-	http.ServeFile(r.Writer, r.request, file)
+	http.ServeFile(r.writer, r.request, file)
 }
 
 // Will be called from ``flush`` Response method if user called ``File`` method.
@@ -131,8 +144,8 @@ func (r *Response) sendFile() {
 	log.Debugf("sending file %s", r.file)
 
 	base := filepath.Base(r.file)
-	r.Writer.Header().Set("Content-Disposition", "attachment; filename="+base)
-	http.ServeFile(r.Writer, r.request, r.file)
+	r.writer.Header().Set("Content-Disposition", "attachment; filename="+base)
+	http.ServeFile(r.writer, r.request, r.file)
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -156,7 +169,7 @@ func (r *Response) flush() {
 	// set all cookies to response object
 	for k, v := range r.Cookie {
 		log.Debug(k)
-		http.SetCookie(r.Writer, v)
+		http.SetCookie(r.writer, v)
 	}
 
 	// in case of file call separate function for piping file to client
@@ -164,7 +177,7 @@ func (r *Response) flush() {
 		log.Debugf("found file, sending")
 		r.sendFile()
 	} else {
-		r.Writer.WriteHeader(r.Status)
-		r.Writer.Write(r.data)
+		r.writer.WriteHeader(r.Status)
+		r.writer.Write(r.data)
 	}
 }

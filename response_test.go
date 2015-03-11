@@ -40,8 +40,8 @@ func getTestApp(t *testing.T) *httpcheck.Checker {
 	})
 
 	app.Get("/header", func(this *Ctx) {
-		this.Res.Header.Set("key", "value")
-		this.Res.Header.Set("key1", "value1")
+		this.Res.Header().Set("key", "value")
+		this.Res.Header().Set("key1", "value1")
 		this.Res.Status = 200
 	})
 
