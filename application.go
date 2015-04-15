@@ -52,7 +52,7 @@ func (a *Application) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	defer func() {
 		if r := recover(); r != nil {
 			a.Emit("error", r)
-			panic(r)
+			log.Panic(r)
 		}
 	}()
 

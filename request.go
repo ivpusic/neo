@@ -2,6 +2,7 @@ package neo
 
 import (
 	"encoding/json"
+	"io/ioutil"
 	"net/http"
 )
 
@@ -37,4 +38,14 @@ func (r *Request) JsonBody(instance interface{}) error {
 	defer r.Body.Close()
 
 	return decoder.Decode(instance)
+}
+
+func (r *Request) StringBody() (string, error) {
+	content, err := ioutil.ReadAll(r.Body)
+
+	if err != nil {
+		return "", err
+	}
+
+	return string(content), nil
 }
