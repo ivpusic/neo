@@ -106,7 +106,7 @@ func (a *Application) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	route, err := a.match(request)
 
 	if err != nil {
-		log.Debugf("route %s not found", req.URL.Path)
+		log.Debugf("route %s not found. Error: %s", req.URL.Path, err.Error())
 
 		// dummy route handler
 		h := func(ctx *Ctx) {

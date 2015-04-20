@@ -109,11 +109,10 @@ func (router *router) flush() {
 			// remove method key from region (GET, POST,...)
 			delete(region.routes, method)
 		}
-
-		// remove region from router region list
-		// in case of failed cast to region, this won't be invoked
-		router.regions.Remove(mr)
 	}
+
+	// remove regions, we don't need them anymore
+	router.regions.Init()
 }
 
 // main API function of router
