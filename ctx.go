@@ -2,6 +2,7 @@ package neo
 
 import (
 	"github.com/ivpusic/neo/ebus"
+	"github.com/jinzhu/gorm"
 	"net/http"
 )
 
@@ -43,6 +44,11 @@ type Ctx struct {
 
 	// Context data map
 	Data CtxData
+
+	// gorm transaction (if you need it in your application).
+	// If you use this Tx instance, you should start it somewhere before.
+	// When exception happens, neo will automatically rollback transaction, if started.
+	Tx *gorm.DB
 }
 
 // Will make default contextual data based on provided request and ResponseWriter
