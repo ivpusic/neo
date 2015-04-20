@@ -11,7 +11,8 @@ import (
 // type-safe version of it.
 type Session struct {
 	Authenticated bool
-	Id            string
+	Id            int
+	Ids           string
 	Role          string
 	Rights        []string
 	Data          map[string]interface{}

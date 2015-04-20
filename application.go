@@ -1,9 +1,11 @@
 package neo
 
 import (
+	"fmt"
 	"github.com/ivpusic/golog"
 	"github.com/ivpusic/neo/ebus"
 	"net/http"
+	"runtime/debug"
 )
 
 // Representing Neo application instance
@@ -51,6 +53,7 @@ func (a *Application) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	// todo: check performance impact
 	defer func() {
 		if r := recover(); r != nil {
+			fmt.Printf("%v", r)
 			a.Emit("error", r)
 			log.Panic(r)
 		}
@@ -69,13 +72,24 @@ func (a *Application) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		if r := recover(); r != nil {
 			err, ok := r.(*NeoAssertError)
 
+			// if there is started transaction, do rollback
+			if ctx.Tx != nil {
+				log.Error("Will rollback transaction")
+				txErr := ctx.Tx.Rollback().Error
+				if txErr != nil {
+					log.Errorf("Error while transaction rollback! %s", txErr.Error())
+				}
+			}
+
 			if ok {
 				response.Raw(err.message, err.status)
-				a.Emit("error", r)
 			} else {
-				// bubble panic
-				panic(r)
+				log.Errorf("%v", r)
+				debug.PrintStack()
+				response.Status = 500
 			}
+
+			a.Emit("error", r)
 		}
 	}()
 
