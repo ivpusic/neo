@@ -88,6 +88,12 @@ func (r *Response) Raw(data []byte, status int) {
 	r.data = data
 }
 
+// Redirect to url with status
+func (r *Response) Redirect(url string, status int) {
+	http.Redirect(r.writer, r.request, url, status)
+	r.skipFlush()
+}
+
 // Write raw response. Implements ResponseWriter.Write.
 func (r *Response) Write(b []byte) (int, error) {
 	return r.writer.Write(b)
