@@ -50,7 +50,7 @@ As we mentioned before we can define middleware for single route. Good usecase f
 Simple example is here:
 
 ```Go
-route := app.Get("/some/protected/route", func(ctx *neo.Ctx) {
+route := app.Get("/some/protected/route", func(ctx *neo.Ctx) (int, error) {
     // implementation
 })
 
