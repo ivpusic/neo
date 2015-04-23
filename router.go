@@ -16,6 +16,7 @@ type handler func(*Ctx) (int, error)
 func (h handler) apply(ctx *Ctx, fns []appliable, current int) {
 	status, err := h(ctx)
 
+	ctx.Res.Status = status
 	if err != nil {
 		log.Error(err)
 	} else {
@@ -23,7 +24,6 @@ func (h handler) apply(ctx *Ctx, fns []appliable, current int) {
 		if len(fns) > current {
 			fns[current].apply(ctx, fns, current)
 		}
-		ctx.Res.Status = status
 	}
 }
 
