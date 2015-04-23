@@ -12,7 +12,7 @@ func TestAdd(t *testing.T) {
 func TestMethods(t *testing.T) {
 	m := new(methods)
 	m.init()
-	fn := func(this *Ctx) {}
+	fn := func(this *Ctx) (int, error) { return 200, nil }
 
 	m.Get("/some", fn)
 	assert.NotNil(t, m.routes["GET"][0])

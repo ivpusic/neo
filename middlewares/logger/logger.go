@@ -10,17 +10,17 @@ import (
 	"time"
 )
 
-func Log(this *neo.Ctx, next neo.Next) {
+func Log(ctx *neo.Ctx, next neo.Next) {
 	start := time.Now()
 	logger := golog.GetLogger("github.com/ivpusic/neo")
-	method := this.Req.Method
-	path := this.Req.URL.Path
+	method := ctx.Req.Method
+	path := ctx.Req.URL.Path
 
 	logger.Info("--> [Req] " + method + " to " + path)
 
 	next()
 
-	status := strconv.Itoa(this.Res.Status)
+	status := strconv.Itoa(ctx.Res.Status)
 	elapsed := int(time.Now().Sub(start) / time.Millisecond)
 
 	logger.Info("<-- [Res] (" + status + ") " + method + " to " + path + " Took " + strconv.Itoa(elapsed))

@@ -10,15 +10,20 @@ import (
 // Route
 ///////////////////////////////////////////////////////////////////
 
-type handler func(*Ctx)
+type handler func(*Ctx) (int, error)
 
 // composing route with middlewares. Will be called from ``compose`` fn.
 func (h handler) apply(ctx *Ctx, fns []appliable, current int) {
-	h(ctx)
+	status, err := h(ctx)
 
-	current++
-	if len(fns) > current {
-		fns[current].apply(ctx, fns, current)
+	if err != nil {
+		log.Error(err)
+	} else {
+		current++
+		if len(fns) > current {
+			fns[current].apply(ctx, fns, current)
+		}
+		ctx.Res.Status = status
 	}
 }
 
