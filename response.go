@@ -17,6 +17,7 @@ type Response struct {
 	data    []byte
 	// defer file sending
 	file       string
+	redirect   string
 	_skipFlush bool
 }
 
@@ -37,61 +38,58 @@ func makeResponse(request *http.Request, w http.ResponseWriter) *Response {
 
 // Will produce JSON string representation of passed object,
 // and send it to client
-func (r *Response) Json(obj interface{}, status int) {
+func (r *Response) Json(obj interface{}) error {
 	res, err := json.Marshal(obj)
 	if err != nil {
-		log.Error(err.Error())
-		return
+		return err
 	}
 
 	r.writer.Header().Set("Content-Type", "application/json")
-	r.Raw(res, status)
+	return r.Raw(res)
 }
 
 // Will produce XML string representation of passed object,
 // and send it to client
-func (r *Response) Xml(obj interface{}, status int) {
+func (r *Response) Xml(obj interface{}) error {
 	res, err := xml.Marshal(obj)
 	if err != nil {
-		log.Error(err.Error())
-		return
+		return err
 	}
 
 	r.writer.Header().Set("Content-Type", "application/xml")
-	r.Raw(res, status)
+	return r.Raw(res)
 }
 
 // Will send provided Text to client.
-func (r *Response) Text(text string, status int) {
-	r.Raw([]byte(text), status)
+func (r *Response) Text(text string) error {
+	return r.Raw([]byte(text))
 }
 
 // Will look for template, render it, and send rendered HTML to client.
 // Second argument is data which will be passed to client.
-func (r *Response) Tpl(name string, data interface{}) {
+func (r *Response) Tpl(name string, data interface{}) error {
 	log.Infof("Rendering template %s", name)
 
 	err := renderTpl(r.writer, name, data)
 	if err != nil {
-		log.Error(err.Error())
 		r.Status = http.StatusNotFound
-	} else {
-		r.Status = http.StatusOK
+		return err
 	}
 
 	r.skipFlush()
+	return nil
 }
 
 // Send Raw data to client.
-func (r *Response) Raw(data []byte, status int) {
-	r.Status = status
+func (r *Response) Raw(data []byte) error {
 	r.data = data
+	return nil
 }
 
 // Redirect to url with status
-func (r *Response) Redirect(url string, status int) {
-	http.Redirect(r.writer, r.request, url, status)
-	r.skipFlush()
+func (r *Response) Redirect(url string) error {
+	r.redirect = url
+	return nil
 }
 
 // Write raw response. Implements ResponseWriter.Write.
@@ -122,27 +120,27 @@ func (r *Response) fileExists(file string) bool {
 }
 
 // Find file, and send it to client.
-func (r *Response) File(path string) {
+func (r *Response) File(path string) error {
 	abspath, err := filepath.Abs(path)
 
 	if err != nil {
-		log.Errorf("error while converting %s to absolute path", path)
-		return
+		return err
 	}
 
 	if !r.fileExists(abspath) {
-		return
+		return err
 	}
 
 	r.file = abspath
+	return nil
 }
 
 // Serving static file.
-func (r *Response) serveFile(file string) {
+func (r *Response) serveFile(file string) error {
 	log.Debugf("serving file %s", file)
 
-	r.Status = http.StatusOK
 	http.ServeFile(r.writer, r.request, file)
+	return nil
 }
 
 // Will be called from ``flush`` Response method if user called ``File`` method.
@@ -182,6 +180,8 @@ func (r *Response) flush() {
 	if len(r.file) > 0 {
 		log.Debugf("found file, sending")
 		r.sendFile()
+	} else if len(r.redirect) > 0 {
+		http.Redirect(r.writer, r.request, r.redirect, r.Status)
 	} else {
 		r.writer.WriteHeader(r.Status)
 		r.writer.Write(r.data)

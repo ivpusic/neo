@@ -17,60 +17,61 @@ func getTestApp(t *testing.T) *httpcheck.Checker {
 	app := App()
 	app.Templates("./testassets/templates/*")
 
-	app.Get("/json", func(this *Ctx) {
-		this.Res.Json(&testPerson{"Some", 30}, 200)
+	app.Get("/json", func(this *Ctx) (int, error) {
+		return 200, this.Res.Json(&testPerson{"Some", 30})
 	})
 
-	app.Get("/xml", func(this *Ctx) {
-		this.Res.Xml(&testPerson{"Some", 30}, 200)
+	app.Get("/xml", func(this *Ctx) (int, error) {
+		return 200, this.Res.Xml(&testPerson{"Some", 30})
 	})
 
-	app.Get("/text", func(this *Ctx) {
-		this.Res.Text("some text", 200)
+	app.Get("/text", func(this *Ctx) (int, error) {
+		return 200, this.Res.Text("some text")
 	})
 
-	app.Get("/tpl", func(this *Ctx) {
-		this.Res.Tpl("testindex", testPerson{"Some", 30})
+	app.Get("/tpl", func(this *Ctx) (int, error) {
+		return 200, this.Res.Tpl("testindex", testPerson{"Some", 30})
 	})
 
-	app.Get("/cookie", func(this *Ctx) {
+	app.Get("/cookie", func(this *Ctx) (int, error) {
 		this.Res.Cookie.Set("key", "value")
 		this.Res.Cookie.Set("key1", "value1")
-		this.Res.Status = 200
+		return 200, nil
 	})
 
-	app.Get("/header", func(this *Ctx) {
+	app.Get("/header", func(this *Ctx) (int, error) {
 		this.Res.Header().Set("key", "value")
 		this.Res.Header().Set("key1", "value1")
-		this.Res.Status = 200
+		return 200, nil
 	})
 
-	app.Get("/status400", func(this *Ctx) {
-		this.Res.Status = 400
+	app.Get("/status400", func(this *Ctx) (int, error) {
+		return 400, nil
 	})
 
-	app.Get("/status200", func(this *Ctx) {
-		this.Res.Status = 200
+	app.Get("/status200", func(this *Ctx) (int, error) {
+		return 200, nil
 	})
 
-	app.Get("/file", func(this *Ctx) {
-		this.Res.File("./testassets/test.txt")
+	app.Get("/file", func(this *Ctx) (int, error) {
+		return 200, this.Res.File("./testassets/test.txt")
 	})
 
-	app.Get("/fileunknown", func(this *Ctx) {
-		this.Res.File("./testassets/test_unkonown_file.txt")
+	app.Get("/fileunknown", func(this *Ctx) (int, error) {
+		return 404, this.Res.File("./testassets/test_unkonown_file.txt")
 	})
 
-	app.Get("/err", func(this *Ctx) {
+	app.Get("/err", func(this *Ctx) (int, error) {
 		Assert(false, 400, []byte("some error"))
+		return 200, nil
 	})
 
-	app.Options("/some/*/:path", func(this *Ctx) {
-		this.Res.Text(this.Req.Params.Get("path"), 200)
+	app.Options("/some/*/:path", func(this *Ctx) (int, error) {
+		return 200, this.Res.Text(this.Req.Params.Get("path"))
 	})
 
-	app.Options("*", func(this *Ctx) {
-		this.Res.Text("allok", 200)
+	app.Options("*", func(this *Ctx) (int, error) {
+		return 200, this.Res.Text("allok")
 	})
 
 	app.Serve("/assets", "./testassets")

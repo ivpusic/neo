@@ -82,7 +82,8 @@ func (a *Application) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 			}
 
 			if ok {
-				response.Raw(err.message, err.status)
+				response.Raw(err.message)
+				response.Status = err.status
 			} else {
 				log.Errorf("%v", r)
 				debug.PrintStack()
@@ -101,9 +102,9 @@ func (a *Application) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		file, err := a.static.match(req.URL.Path)
 
 		if err == nil {
-			h := func(ctx *Ctx) {
+			h := func(ctx *Ctx) (int, error) {
 				response.skipFlush()
-				response.serveFile(file)
+				return 200, response.serveFile(file)
 			}
 
 			fn := compose(merge(a.middlewares, []appliable{handler(h)}))
@@ -123,8 +124,8 @@ func (a *Application) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		log.Debugf("route %s not found. Error: %s", req.URL.Path, err.Error())
 
 		// dummy route handler
-		h := func(ctx *Ctx) {
-			response.Status = http.StatusNotFound
+		h := func(ctx *Ctx) (int, error) {
+			return http.StatusNotFound, nil
 		}
 
 		compose(merge(a.middlewares, []appliable{handler(h)}))(ctx)

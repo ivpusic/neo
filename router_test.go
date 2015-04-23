@@ -60,8 +60,9 @@ func TestRouterMatch(t *testing.T) {
 			counter++
 		}
 
-		handler := func(this *Ctx) {
+		handler := func(this *Ctx) (int, error) {
 			counter++
+			return 200, nil
 		}
 
 		router.Use(fn)
@@ -124,8 +125,9 @@ func TestRegionMatch(t *testing.T) {
 		counter++
 	}
 
-	handler := func(this *Ctx) {
+	handler := func(this *Ctx) (int, error) {
 		counter++
+		return 200, nil
 	}
 
 	region.Use(fn)
