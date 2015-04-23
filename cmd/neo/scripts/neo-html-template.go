@@ -37,8 +37,8 @@ func main() {
 	app.Use(logger.Log)
 	app.Templates("*")
 
-	app.Get("/", func(this *neo.Ctx) {
-		this.Res.Tpl("index", struct {
+	app.Get("/", func(ctx *neo.Ctx) (int, error) {
+		return 200, ctx.Res.Tpl("index", struct {
 			Name string
 		} {"Neo"})
 	})
