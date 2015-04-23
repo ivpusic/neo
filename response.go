@@ -17,6 +17,7 @@ type Response struct {
 	data    []byte
 	// defer file sending
 	file       string
+	redirect   string
 	_skipFlush bool
 }
 
@@ -87,8 +88,7 @@ func (r *Response) Raw(data []byte) error {
 
 // Redirect to url with status
 func (r *Response) Redirect(url string) error {
-	http.Redirect(r.writer, r.request, url, http.StatusMovedPermanently)
-	r.skipFlush()
+	r.redirect = url
 	return nil
 }
 
@@ -180,6 +180,8 @@ func (r *Response) flush() {
 	if len(r.file) > 0 {
 		log.Debugf("found file, sending")
 		r.sendFile()
+	} else if len(r.redirect) > 0 {
+		http.Redirect(r.writer, r.request, r.redirect, r.Status)
 	} else {
 		r.writer.WriteHeader(r.Status)
 		r.writer.Write(r.data)
