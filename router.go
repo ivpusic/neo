@@ -16,10 +16,12 @@ type handler func(*Ctx) (int, error)
 func (h handler) apply(ctx *Ctx, fns []appliable, current int) {
 	status, err := h(ctx)
 
-	ctx.Res.Status = status
 	if err != nil {
-		log.Error(err)
+		log.Errorf("Error returned from route handler. %s", err.Error())
+		ctx.Res.Status = 500
 	} else {
+		ctx.Res.Status = status
+
 		current++
 		if len(fns) > current {
 			fns[current].apply(ctx, fns, current)
