@@ -40,7 +40,7 @@ app.Get("/", func(ctx *neo.Ctx) (int, error) {
 If you want to declare ``POST`` route to for example ``/some/route`` route, you can use something like this:
 
 ```Go
-app.Post("/some/route", func(ctx *neo.Ctx) {
+app.Post("/some/route", func(ctx *neo.Ctx) (int, error) {
     // your route handler implementation
 })
 ```
