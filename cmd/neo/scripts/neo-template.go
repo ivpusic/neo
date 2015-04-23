@@ -36,8 +36,8 @@ func main() {
 	app := neo.App()
 	app.Use(logger.Log)
 
-	app.Get("/", func(this *neo.Ctx) {
-		this.Res.Text("Works!", 200)
+	app.Get("/", func(ctx *neo.Ctx) (int, error) {
+		return 200, ctx.Res.Text("Works!")
 	})
 
 	app.Start()
