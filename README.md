@@ -38,8 +38,8 @@ import (
 func main() {
     app := neo.App()
 
-    app.Get("/", func(ctx *neo.Ctx) {
-        ctx.Res.Text("I am Neo Programmer", 200)
+    app.Get("/", func(ctx *neo.Ctx) (int, error) {
+        return 200, ctx.Res.Text("I am Neo Programmer")
     })
 
     app.Start()
