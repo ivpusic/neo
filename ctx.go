@@ -51,6 +51,17 @@ type Ctx struct {
 	Tx *gorm.DB
 }
 
+// if there is started transaction, do rollback
+func (c *Ctx) rollback() {
+	if c.Tx != nil {
+		log.Error("Will rollback transaction")
+		txErr := c.Tx.Rollback().Error
+		if txErr != nil {
+			log.Errorf("Error while transaction rollback! %s", txErr.Error())
+		}
+	}
+}
+
 // Will make default contextual data based on provided request and ResponseWriter
 func makeCtx(req *http.Request, w http.ResponseWriter) *Ctx {
 	request := makeRequest(req)

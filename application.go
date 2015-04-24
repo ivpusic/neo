@@ -72,14 +72,7 @@ func (a *Application) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		if r := recover(); r != nil {
 			err, ok := r.(*NeoAssertError)
 
-			// if there is started transaction, do rollback
-			if ctx.Tx != nil {
-				log.Error("Will rollback transaction")
-				txErr := ctx.Tx.Rollback().Error
-				if txErr != nil {
-					log.Errorf("Error while transaction rollback! %s", txErr.Error())
-				}
-			}
+			ctx.rollback()
 
 			if ok {
 				response.Raw(err.message)
