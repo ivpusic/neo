@@ -32,6 +32,18 @@ func (r CtxData) Del(key string) {
 // Context
 ///////////////////////////////////////////////////////////////////
 
+// Purpose of this struct is to be used by authentication and authorization middlewares.
+// Saving session is common in many web applications, and this struct is trying to provide
+// type-safe version of it.
+type Session struct {
+	// is user authenticated?
+	Authenticated bool
+	// data about logged user
+	User interface{}
+	// other data
+	Data interface{}
+}
+
 // Representing context for this request.
 type Ctx struct {
 	ebus.EBus
@@ -49,6 +61,9 @@ type Ctx struct {
 	// If you use this Tx instance, you should start it somewhere before.
 	// When exception happens, neo will automatically rollback transaction, if started.
 	Tx *gorm.DB
+
+	// general purpose session instance
+	Session Session
 }
 
 // if there is started transaction, do rollback

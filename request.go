@@ -6,24 +6,10 @@ import (
 	"net/http"
 )
 
-// Purpose of this struct is to be used by authentication and authorization middlewares.
-// Saving session is common in many web applications, and this struct is trying to provide
-// type-safe version of it.
-type Session struct {
-	Authenticated bool
-	Id            int
-	Ids           string
-	Role          string
-	Rights        []string
-	Data          map[string]interface{}
-}
-
 // Wrapped http.Request. It contains utility methods for dealing with content of incomming http.Request instance.
 type Request struct {
 	*http.Request
 	Params UrlParam
-	// general purpose session instance
-	Session Session
 }
 
 // Make cookie map.
