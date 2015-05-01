@@ -1,9 +1,10 @@
 package neo
 
 import (
+	"net/http"
+
 	"github.com/ivpusic/neo/ebus"
 	"github.com/jinzhu/gorm"
-	"net/http"
 )
 
 ///////////////////////////////////////////////////////////////////
@@ -62,17 +63,22 @@ type Ctx struct {
 	// When exception happens, neo will automatically rollback transaction, if started.
 	Tx *gorm.DB
 
+	// Flag to give information if Rollback method was invoked.
+	TxDidRollback bool
+
 	// general purpose session instance
 	Session Session
 }
 
 // if there is started transaction, do rollback
-func (c *Ctx) rollback() {
+func (c *Ctx) Rollback() {
 	if c.Tx != nil {
 		log.Error("Will rollback transaction")
-		txErr := c.Tx.Rollback().Error
-		if txErr != nil {
-			log.Errorf("Error while transaction rollback! %s", txErr.Error())
+		err := c.Tx.Rollback().Error
+		if err != nil {
+			log.Errorf("Error while transaction rollback! %s", err.Error())
+		} else {
+			c.TxDidRollback = true
 		}
 	}
 }

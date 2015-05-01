@@ -2,10 +2,10 @@ package neo
 
 import (
 	"fmt"
+	"net/http"
+
 	"github.com/ivpusic/golog"
 	"github.com/ivpusic/neo/ebus"
-	"net/http"
-	"runtime/debug"
 )
 
 // Representing Neo application instance
@@ -50,7 +50,6 @@ func (a *Application) init(confFile string) {
 // Method will accept all incomming HTTP requests, and pass requests to appropriate handlers if they are defined.
 func (a *Application) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	// log all unhandled panic's
-	// todo: check performance impact
 	defer func() {
 		if r := recover(); r != nil {
 			fmt.Printf("%v", r)
@@ -64,28 +63,6 @@ func (a *Application) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	response := ctx.Res
 
 	defer response.flush()
-
-	///////////////////////////////////////////////////////////////////
-	// Catch Neo Assertions
-	///////////////////////////////////////////////////////////////////
-	defer func() {
-		if r := recover(); r != nil {
-			err, ok := r.(*NeoAssertError)
-
-			ctx.rollback()
-
-			if ok {
-				response.Raw(err.message)
-				response.Status = err.status
-			} else {
-				log.Errorf("%v", r)
-				debug.PrintStack()
-				response.Status = 500
-			}
-
-			a.Emit("error", r)
-		}
-	}()
 
 	///////////////////////////////////////////////////////////////////
 	// Static File Serving

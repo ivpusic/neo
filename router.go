@@ -3,6 +3,7 @@ package neo
 import (
 	"container/list"
 	"errors"
+
 	"github.com/ivpusic/urlregex"
 )
 
@@ -19,14 +20,14 @@ func (h handler) apply(ctx *Ctx, fns []appliable, current int) {
 	if err != nil {
 		log.Errorf("Error returned from route handler. %s", err.Error())
 		ctx.Res.Status = 500
-		ctx.rollback()
+		ctx.Rollback()
 	} else {
 		ctx.Res.Status = status
+	}
 
-		current++
-		if len(fns) > current {
-			fns[current].apply(ctx, fns, current)
-		}
+	current++
+	if len(fns) > current {
+		fns[current].apply(ctx, fns, current)
 	}
 }
 

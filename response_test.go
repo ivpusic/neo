@@ -1,11 +1,12 @@
 package neo
 
 import (
-	"github.com/ivpusic/httpcheck"
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"net/http"
 	"testing"
+
+	"github.com/ivpusic/httpcheck"
+	"github.com/stretchr/testify/assert"
 )
 
 type testPerson struct {
@@ -59,11 +60,6 @@ func getTestApp(t *testing.T) *httpcheck.Checker {
 
 	app.Get("/fileunknown", func(this *Ctx) (int, error) {
 		return 404, this.Res.File("./testassets/test_unkonown_file.txt")
-	})
-
-	app.Get("/err", func(this *Ctx) (int, error) {
-		Assert(false, 400, []byte("some error"))
-		return 200, nil
 	})
 
 	app.Options("/some/*/:path", func(this *Ctx) (int, error) {
@@ -218,12 +214,4 @@ func TestRouteNotFound(t *testing.T) {
 	server.Test("PUT", "/unknown_route").
 		Check().
 		HasStatus(404)
-}
-
-func TestNeoAssert(t *testing.T) {
-	server := getTestApp(t)
-	server.Test("GET", "/err").
-		Check().
-		HasStatus(400).
-		HasBody([]byte("some error"))
 }
