@@ -4,10 +4,11 @@
 package logger
 
 import (
-	"github.com/ivpusic/golog"
-	"github.com/ivpusic/neo"
 	"strconv"
 	"time"
+
+	"github.com/ivpusic/golog"
+	"github.com/ivpusic/neo"
 )
 
 func Log(ctx *neo.Ctx, next neo.Next) {
@@ -23,5 +24,5 @@ func Log(ctx *neo.Ctx, next neo.Next) {
 	status := strconv.Itoa(ctx.Res.Status)
 	elapsed := int(time.Now().Sub(start) / time.Millisecond)
 
-	logger.Info("<-- [Res] (" + status + ") " + method + " to " + path + " Took " + strconv.Itoa(elapsed))
+	logger.Info("<-- [Res] (" + status + ") " + method + " to " + path + " Took " + strconv.Itoa(elapsed) + "ms")
 }
