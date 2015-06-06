@@ -73,7 +73,7 @@ type Ctx struct {
 // if there is started transaction, do rollback
 func (c *Ctx) Rollback() {
 	if c.Tx != nil {
-		log.Error("Will rollback transaction")
+		log.Warn("Will rollback transaction")
 		err := c.Tx.Rollback().Error
 		if err != nil {
 			log.Errorf("Error while transaction rollback! %s", err.Error())
