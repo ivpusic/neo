@@ -69,7 +69,7 @@ func (a *Application) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
 		response.Status = http.StatusExpectationFailed
 		response.Json(map[string]string{
-			"error": "request too large",
+			"error": "request body too large",
 		})
 
 		return
