@@ -64,6 +64,19 @@ func (a *Application) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
 	defer response.flush()
 
+	if req.ContentLength > a.Conf.App.MaxBodyBytes {
+		log.Errorf("Received too large body. Size: %d, URL %s, Method: %s", req.ContentLength, req.URL.Path, req.Method)
+
+		response.Status = http.StatusExpectationFailed
+		response.Json(map[string]string{
+			"error": "request too large",
+		})
+
+		return
+	}
+
+	req.Body = http.MaxBytesReader(w, req.Body, a.Conf.App.MaxBodyBytes)
+
 	///////////////////////////////////////////////////////////////////
 	// Static File Serving
 	///////////////////////////////////////////////////////////////////
@@ -109,7 +122,15 @@ func (a *Application) Start() {
 	a.flush()
 
 	log.Infof("Starting application on address `%s`", a.Conf.App.Addr)
-	err := http.ListenAndServe(a.Conf.App.Addr, a)
+	s := &http.Server{
+		Handler:        a,
+		Addr:           a.Conf.App.Addr,
+		ReadTimeout:    a.Conf.App.ReadTimeout,
+		WriteTimeout:   a.Conf.App.WriteTimeout,
+		MaxHeaderBytes: a.Conf.App.MaxHeaderBytes,
+	}
+
+	err := s.ListenAndServe()
 	if err != nil {
 		panic(err.Error())
 	}

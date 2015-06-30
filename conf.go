@@ -1,7 +1,19 @@
 package neo
 
 import (
+	"time"
+
+	"net/http"
+
 	"github.com/ivpusic/toml"
+)
+
+const (
+	BYTE     = 1.0
+	KILOBYTE = 1024 * BYTE
+	MEGABYTE = 1024 * KILOBYTE
+	GIGABYTE = 1024 * MEGABYTE
+	TERABYTE = 1024 * GIGABYTE
 )
 
 ///////////////////////////////////////////////////////////////////
@@ -28,8 +40,14 @@ type AppModeSettings struct {
 ///////////////////////////////////////////////////////////////////
 
 type ApplicationSettings struct {
-	Addr   string
-	Logger LoggerSettings
+	Addr         string
+	ReadTimeout  time.Duration
+	WriteTimeout time.Duration
+	// default to http.DefaultMaxHeaderBytes
+	MaxHeaderBytes int
+	// Default 10MB
+	MaxBodyBytes int64
+	Logger       LoggerSettings
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -60,6 +78,10 @@ func (c *Conf) loadDefaults() {
 	c.App.Addr = ":3000"
 	c.App.Logger.Level = "INFO"
 	c.App.Logger.Name = "application"
+	c.App.MaxHeaderBytes = http.DefaultMaxHeaderBytes
+	c.App.MaxBodyBytes = 10 * MEGABYTE
+	c.App.ReadTimeout = 0
+	c.App.WriteTimeout = 0
 }
 
 // Will try to parse TOML configuration file.
