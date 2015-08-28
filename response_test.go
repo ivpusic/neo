@@ -74,7 +74,7 @@ func getTestApp(t *testing.T) *httpcheck.Checker {
 
 	app.flush()
 
-	return httpcheck.New(t, app, ":4449")
+	return httpcheck.New(t, app, ":10101")
 }
 
 func TestWildcard(t *testing.T) {
