@@ -21,20 +21,21 @@ Values bellow are default values. If for example ``addr`` options is missing in 
 # settings related to recompiling and reruning app when source changes
 #
 [hotreload]
+  # file suffixes to watch for changes
+  suffixes = [".go"]
 
-# files/directories to watch for changes
-watch = ["."]
-
-# files/directories to ignore
-ignore = []
+  # files/directories to ignore
+  ignore = []
 
 #
 # general application settings
 #
 [app]
-# on which address to run application
-addr = ":3000"
-    [app.logger]
+  # additional application arguments
+  args = []
+  addr = ":3000"
+
+  [app.logger]
     level = "DEBUG"
     name = "application"
 
@@ -42,8 +43,8 @@ addr = ":3000"
 # neo settings
 #
 [neo]
-    [neo.logger]
-    level = "INFO"
+  [neo.logger]
+  level = "INFO"
 ```
 
 This file will be automatically generated when you create Neo application using ``new`` command.
