@@ -21,9 +21,8 @@ const (
 ///////////////////////////////////////////////////////////////////
 
 type HotReload struct {
-	Command string
-	Watch   []string
-	Ignore  []string
+	Suffixes []string
+	Ignore   []string
 }
 
 type LoggerSettings struct {
@@ -31,15 +30,13 @@ type LoggerSettings struct {
 	Level string
 }
 
-type AppModeSettings struct {
-	Addr string
-}
-
 ///////////////////////////////////////////////////////////////////
 // `App` section
 ///////////////////////////////////////////////////////////////////
 
 type ApplicationSettings struct {
+	Test         string
+	Args         []string
 	Addr         string
 	ReadTimeout  time.Duration
 	WriteTimeout time.Duration
@@ -72,9 +69,10 @@ type Conf struct {
 func (c *Conf) loadDefaults() {
 	// hotreload
 	c.Hotreload.Ignore = []string{}
-	c.Hotreload.Watch = []string{"."}
+	c.Hotreload.Suffixes = []string{}
 
 	// app
+	c.App.Args = []string{}
 	c.App.Addr = ":3000"
 	c.App.Logger.Level = "INFO"
 	c.App.Logger.Name = "application"

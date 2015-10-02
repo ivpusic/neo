@@ -1,8 +1,9 @@
 package neo
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestParse(t *testing.T) {
@@ -10,9 +11,8 @@ func TestParse(t *testing.T) {
 	conf := new(Conf)
 	conf.Parse("./testassets/testconf.toml")
 
-	assert.Equal(t, "go run main.go", conf.Hotreload.Command)
-	assert.Equal(t, []string{".", ".."}, conf.Hotreload.Watch)
-	assert.Equal(t, []string{"/some/path"}, conf.Hotreload.Ignore)
+	assert.Equal(t, []string{"test", "Godeps"}, conf.Hotreload.Ignore)
+	assert.Equal(t, []string{".go"}, conf.Hotreload.Suffixes)
 
 	assert.Equal(t, ":3000", conf.App.Addr)
 	assert.Equal(t, "DEBUG", conf.App.Logger.Level)

@@ -1,15 +1,15 @@
 package main
 
 import (
+	"os"
+	"path"
+	"path/filepath"
+	"strings"
+
 	"github.com/ivpusic/golog"
 	"github.com/ivpusic/neo"
 	"github.com/ivpusic/neo/cmd/neo/scripts"
 	"gopkg.in/alecthomas/kingpin.v1"
-	"os"
-	"path"
-	"path/filepath"
-	"strconv"
-	"strings"
 )
 
 var (
@@ -76,42 +76,31 @@ func handleRunCommand() {
 	// parse configuration
 	config.Parse(*configFile)
 
-	// parse port, default to 3000
-	port := 3000
-	parts := strings.Split(config.App.Addr, ":")
-	if len(parts) > 0 {
-		var err error
-		port, err = strconv.Atoi(parts[len(parts)-1])
-
-		if err != nil {
-			port = 3000
-		}
-	}
-
 	arguments := []string{}
 
-	// port
-	arguments = append(arguments, "-p", strconv.Itoa(port))
+	// set project root
+	arguments = append(arguments, "-r", filepath.Dir(mainFileAbs))
 
-	// command
-	if len(*mainFile) > 0 {
-		arguments = append(arguments, "-c", "go run "+*mainFile+" --config "+*configFile)
-	} else {
-		arguments = append(arguments, "-c", config.Hotreload.Command+" --config "+*configFile)
+	// ignore files
+	if len(config.Hotreload.Ignore) > 0 {
+		arguments = append(arguments, "-i", strings.Join(config.Hotreload.Ignore, ","))
 	}
 
-	// watch
-	arguments = append(arguments, "-w", strings.Join(config.Hotreload.Watch, ","))
+	// suffixes to watch
+	if len(config.Hotreload.Suffixes) > 0 {
+		arguments = append(arguments, "-s", strings.Join(config.Hotreload.Suffixes, ","))
+	}
 
-	// ignore
-	arguments = append(arguments, "-i", strings.Join(config.Hotreload.Ignore, ","))
+	// app arguments
+	config.App.Args = append(config.App.Args, "--config", *configFile)
+	arguments = append(arguments, "-a"+strings.Join(config.App.Args, ","))
 
 	// verbose
 	if *verbose {
 		arguments = append(arguments, "-v")
 	}
 
-	runCmd("hr", arguments)
+	runCmd("rerun", arguments)
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -156,10 +145,10 @@ func handleNewCommand() {
 func main() {
 	logger.Level = golog.INFO
 
-	app.Version("0.0.1")
+	app.Version("1.0.0")
 
 	// install dependencies
-	outputCmd("go", []string{"get", "github.com/ivpusic/go-hotreload/hr"})
+	outputCmd("go", []string{"get", "github.com/ivpusic/reload"})
 
 	switch kingpin.MustParse(app.Parse(os.Args[1:])) {
 	case run.FullCommand():
