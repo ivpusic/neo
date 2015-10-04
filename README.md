@@ -22,7 +22,7 @@ go get github.com/ivpusic/neo/cmd/neo
 
 ## Example
 
-Create Neo application
+Create Neo application:
 ```bash
 neo new myapp
 cd myapp
@@ -46,7 +46,7 @@ func main() {
 }
 ```
 
-Run it!
+Run it:
 ```bash
 neo run main.go
 ```
