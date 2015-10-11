@@ -78,9 +78,6 @@ func handleRunCommand() {
 
 	arguments := []string{}
 
-	// set project root
-	arguments = append(arguments, "-r", filepath.Dir(mainFileAbs))
-
 	// ignore files
 	if len(config.Hotreload.Ignore) > 0 {
 		arguments = append(arguments, "-i", strings.Join(config.Hotreload.Ignore, ","))
