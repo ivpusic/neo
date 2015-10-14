@@ -18,10 +18,14 @@ func outputCmd(command string, args []string) {
 	}
 }
 
-func runCmd(command string, args []string) (*exec.Cmd, error) {
+func runCmd(command string, args []string) {
 	cmd := exec.Command(command, args...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
-	return cmd, cmd.Start()
+	err := cmd.Run()
+	if err != nil {
+		logger.Errorf("Error while running rerun command! %s", err.Error())
+		os.Exit(1)
+	}
 }

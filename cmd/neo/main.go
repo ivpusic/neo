@@ -2,11 +2,9 @@ package main
 
 import (
 	"os"
-	"os/signal"
 	"path"
 	"path/filepath"
 	"strings"
-	"syscall"
 
 	"github.com/ivpusic/golog"
 	"github.com/ivpusic/neo"
@@ -99,27 +97,7 @@ func handleRunCommand() {
 		arguments = append(arguments, "-v")
 	}
 
-	rerun, err := runCmd("rerun", arguments)
-	if err != nil {
-		logger.Errorf("Error while running rerun command! %s", err.Error())
-		os.Exit(1)
-	}
-
-	sigs := make(chan os.Signal)
-	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
-
-	// on ctrl+c remove build files
-	go func(proc *os.Process) {
-		<-sigs
-		proc.Signal(syscall.SIGTERM)
-		os.Exit(0)
-	}(rerun.Process)
-
-	err = rerun.Wait()
-	if err != nil {
-		logger.Errorf("Error while running rerun command! %s", err.Error())
-		os.Exit(1)
-	}
+	runCmd("rerun", arguments)
 }
 
 ///////////////////////////////////////////////////////////////////
