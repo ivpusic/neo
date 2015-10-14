@@ -18,14 +18,10 @@ func outputCmd(command string, args []string) {
 	}
 }
 
-func runCmd(command string, args []string) {
+func runCmd(command string, args []string) (*exec.Cmd, error) {
 	cmd := exec.Command(command, args...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
-	err := cmd.Run()
-	if err != nil {
-		logger.Error(err.Error())
-		os.Exit(0)
-	}
+	return cmd, cmd.Start()
 }
