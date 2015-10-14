@@ -102,7 +102,7 @@ func handleRunCommand() {
 	rerun, err := runCmd("rerun", arguments)
 	if err != nil {
 		logger.Errorf("Error while running rerun command! %s", err.Error())
-		os.Exit(0)
+		os.Exit(1)
 	}
 
 	sigs := make(chan os.Signal)
@@ -118,7 +118,7 @@ func handleRunCommand() {
 	err = rerun.Wait()
 	if err != nil {
 		logger.Errorf("Error while running rerun command! %s", err.Error())
-		os.Exit(0)
+		os.Exit(1)
 	}
 }
 
