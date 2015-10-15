@@ -142,7 +142,7 @@ func handleNewCommand() {
 func main() {
 	logger.Level = golog.INFO
 
-	app.Version("1.0.0")
+	app.Version("1.0.1")
 
 	// install dependencies
 	outputCmd("go", []string{"get", "github.com/ivpusic/reload"})
