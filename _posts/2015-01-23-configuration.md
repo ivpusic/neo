@@ -5,7 +5,7 @@ date: 2015-01-22 15:39:41
 categories: tutorials
 ---
 
-### With toml
+## With toml
 
 You can configure your application using ``toml`` based configuration file. By default Neo will look for configuration file with name ``config.toml`` in the same directory as application ``main.go`` file.
 
