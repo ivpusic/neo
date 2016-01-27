@@ -56,7 +56,8 @@ This file will be automatically generated when you create Neo application using 
 If you don't like configuration files, you can do it from Go code.
 
 Example (listen on 9000):
-```Go
+
+```Golang
 func main() {
     myapp := neo.App()
 
