@@ -41,7 +41,7 @@ func main() {
     app.Get("/", func(ctx *neo.Ctx) (int, error) {
         return 200, ctx.Res.Text("I am Neo Programmer")
     })
-
+	app.Conf.App.Addr = ":3000"
     app.Start()
 }
 ```
