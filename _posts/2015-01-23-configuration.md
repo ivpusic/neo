@@ -70,4 +70,4 @@ func main() {
 }
 ```
 
-For more information about `Conf` structure check out api docs here. https://godoc.org/github.com/ivpusic/neo#Conf 
+For more information about `Conf` structure check out api docs here. [https://godoc.org/github.com/ivpusic/neo#Conf](https://godoc.org/github.com/ivpusic/neo#Conf) 
