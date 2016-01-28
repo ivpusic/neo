@@ -57,7 +57,7 @@ If you don't like configuration files, you can do it from Go code.
 
 Example (listen on 9000):
 
-```Golang
+```Go
 func main() {
     myapp := neo.App()
 
