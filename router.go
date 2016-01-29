@@ -20,7 +20,6 @@ func (h handler) apply(ctx *Ctx, fns []appliable, current int) {
 	if err != nil {
 		log.Errorf("Error returned from route handler. %s", err.Error())
 		ctx.Res.Status = 500
-		ctx.Rollback()
 	} else {
 		ctx.Res.Status = status
 	}

@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/ivpusic/neo/ebus"
-	"github.com/jinzhu/gorm"
 )
 
 ///////////////////////////////////////////////////////////////////
@@ -58,29 +57,8 @@ type Ctx struct {
 	// Context data map
 	Data CtxData
 
-	// gorm transaction (if you need it in your application).
-	// If you use this Tx instance, you should start it somewhere before.
-	// When exception happens, neo will automatically rollback transaction, if started.
-	Tx *gorm.DB
-
-	// Flag to give information if Rollback method was invoked.
-	TxDidRollback bool
-
 	// general purpose session instance
 	Session Session
-}
-
-// if there is started transaction, do rollback
-func (c *Ctx) Rollback() {
-	if c.Tx != nil {
-		log.Warn("Will rollback transaction")
-		err := c.Tx.Rollback().Error
-		if err != nil {
-			log.Errorf("Error while transaction rollback! %s", err.Error())
-		} else {
-			c.TxDidRollback = true
-		}
-	}
 }
 
 // Will make default contextual data based on provided request and ResponseWriter
