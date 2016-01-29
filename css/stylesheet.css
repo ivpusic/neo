@@ -30,7 +30,7 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0 0 20px;
 }
 li {
-    line-height: 1.4;
+    line-height: 1.8;
 }
 /* Header, <header>
    header   - container
@@ -230,4 +230,5 @@ li .active {
     background-color: #3F51B5;
     color: white;
     padding: 6px;
+    text-decoration: none;
 }
