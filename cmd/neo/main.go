@@ -142,10 +142,10 @@ func handleNewCommand() {
 func main() {
 	logger.Level = golog.INFO
 
-	app.Version("1.0.1")
+	app.Version("1.0.2")
 
 	// install dependencies
-	outputCmd("go", []string{"get", "github.com/ivpusic/reload"})
+	outputCmd("go", []string{"get", "github.com/ivpusic/rerun"})
 
 	switch kingpin.MustParse(app.Parse(os.Args[1:])) {
 	case run.FullCommand():
