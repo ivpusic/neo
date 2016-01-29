@@ -107,6 +107,11 @@ func (r *Response) WriteHeader(s int) {
 	r.writer.WriteHeader(s)
 }
 
+// Get http.ResponseWriter directly
+func (r *Response) Writer() http.ResponseWriter {
+	return r.writer
+}
+
 // Checking if file exist.
 // todo: consider moving this to utils.go
 func (r *Response) fileExists(file string) bool {
