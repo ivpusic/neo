@@ -23,4 +23,4 @@ We want to serve ```assets``` directory using Neo. Ok, easy.
 app.Serve("/static", "./path/to/assets")
 ```
 
-Now if we navigate to ```/static/js/script.js``` or ```/static/js/stylesheet.css``` we will get content of those files.
+Now if we navigate to ```/static/js/script.js``` or ```/static/css/stylesheet.css``` we will get content of those files.
