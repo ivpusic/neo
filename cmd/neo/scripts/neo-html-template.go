@@ -35,7 +35,7 @@ func main() {
 	app := neo.App()
 
 	app.Use(logger.Log)
-	app.Templates("*")
+	app.Templates("index.tpl")
 
 	app.Get("/", func(ctx *neo.Ctx) (int, error) {
 		return 200, ctx.Res.Tpl("index", struct {
