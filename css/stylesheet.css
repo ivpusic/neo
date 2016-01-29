@@ -4,8 +4,8 @@
 body {
     margin: 0;
     padding: 0;
-    background: white;
-    color: black;
+    background: #151515 url("../images/bkg.png") 0 0;
+    color: #eaeaea;
     font: 16px;
     line-height: 1.5;
     font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
@@ -39,11 +39,11 @@ li {
 */
 
 header {
-    background: #3F51B5;
+    background: rgba(0, 0, 0, 0.1);
     width: 100%;
+    border-bottom: 1px dashed #b5e853;
     padding: 20px 0;
     margin: 0 0 40px 0;
-    box-shadow:0 2px 4px -1px rgba(0,0,0,.2),0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12)
 }
 header h1 {
     font-size: 30px;
@@ -51,7 +51,7 @@ header h1 {
     margin: 0;
     font-weight: bold;
     font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
-    color: white;
+    color: #b5e853;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1), 0 0 5px rgba(181, 232, 83, 0.1), 0 0 10px rgba(181, 232, 83, 0.1);
     letter-spacing: -1px;
     -webkit-font-smoothing: antialiased;
@@ -63,7 +63,7 @@ header h1:before {
 header h2 {
     font-size: 18px;
     font-weight: 300;
-    color: #EFEFEF;
+    color: #666;
 }
 #downloads .btn {
     display: inline-block;
@@ -84,7 +84,7 @@ section img {
 h1, h2, h3, h4, h5, h6 {
     font-weight: normal;
     font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
-    color: white;
+    color: #b5e853;
     letter-spacing: -0.03em;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1), 0 0 5px rgba(181, 232, 83, 0.1), 0 0 10px rgba(181, 232, 83, 0.1);
 }
@@ -119,9 +119,10 @@ ul li {
     list-style: none;
 }
 ul li:before {
+    content: ">>";
     font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
     font-size: 13px;
-    color: black;
+    color: #b5e853;
     margin-left: -37px;
     margin-right: 21px;
     line-height: 16px;
@@ -132,11 +133,11 @@ blockquote {
     border-left: 1px dotted #666;
 }
 pre {
-    background: #f7f7f7;
-    border: 1px solid rgba(0, 0, 0, 0.15);
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     padding: 10px;
     font-size: 14px;
-    color: black;
+    color: #b5e853;
     border-radius: 2px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
@@ -200,7 +201,8 @@ hr {
 */
 
 a {
-    color: black;
+    color: #63c0f5;
+    text-shadow: 0 0 5px rgba(104, 182, 255, 0.5);
 }
 /* Clearfix */
 
