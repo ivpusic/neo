@@ -61,7 +61,7 @@ As you can see you can provide multiple paths where your templates are located.
 Then in one of your route handlers you have to call template rendering in order to make HTML and return it to user.
 
 ```Go
-app.Get("/", func(ctx neo.Ctx) (int, error) {
+app.Get("/", func(ctx *neo.Ctx) (int, error) {
     return 200, ctx.Res.Tpl("index", nil)
 })
 ```
