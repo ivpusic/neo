@@ -85,7 +85,7 @@ func TestComposeWithDownstream(t *testing.T) {
 }
 
 func TestComposeWithoutDownstream(t *testing.T) {
-	var noDownstream middleware = testMiddlewareWithoutDownstream
+	var noDownstream Middleware = testMiddlewareWithoutDownstream
 
 	middlewares := []appliable{
 		noDownstream,
