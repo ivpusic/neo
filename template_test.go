@@ -1,9 +1,10 @@
 package neo
 
 import (
-	"github.com/stretchr/testify/assert"
 	"regexp"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 type testWriter struct {

@@ -2,9 +2,10 @@ package neo
 
 import (
 	"errors"
-	"github.com/ivpusic/golog"
 	"os"
 	"strings"
+
+	"github.com/ivpusic/golog"
 )
 
 // Checking if provided path is directory

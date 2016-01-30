@@ -2,6 +2,7 @@ package neo
 
 import (
 	"github.com/stretchr/testify/assert"
+	"net/http"
 	"net/http/httptest"
 	"testing"
 )
@@ -22,7 +23,7 @@ func TestCtxReqRes(t *testing.T) {
 	assert.NotNil(t, ctx.Req.URL)
 
 	assert.NotNil(t, ctx.Res)
-	assert.Equal(t, 404, ctx.Res.Status)
+	assert.Equal(t, http.StatusNotFound, ctx.Res.Status)
 }
 
 func TestCtxData(t *testing.T) {

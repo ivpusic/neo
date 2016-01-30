@@ -1,8 +1,10 @@
 package neo
 
 import (
-	"github.com/stretchr/testify/assert"
+	"net/http"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestAdd(t *testing.T) {
@@ -12,7 +14,7 @@ func TestAdd(t *testing.T) {
 func TestMethods(t *testing.T) {
 	m := new(methods)
 	m.init()
-	fn := func(this *Ctx) (int, error) { return 200, nil }
+	fn := func(this *Ctx) (int, error) { return http.StatusOK, nil }
 
 	m.Get("/some", fn)
 	assert.NotNil(t, m.routes["GET"][0])
