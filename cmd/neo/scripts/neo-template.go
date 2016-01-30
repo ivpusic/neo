@@ -37,7 +37,7 @@ func main() {
 	app.Use(logger.Log)
 
 	app.Get("/", func(ctx *neo.Ctx) (int, error) {
-		return 200, ctx.Res.Text("Works!")
+		return http.StatusOK, ctx.Res.Text("Works!")
 	})
 
 	app.Start()

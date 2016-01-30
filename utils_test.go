@@ -1,9 +1,10 @@
 package neo
 
 import (
+	"testing"
+
 	"github.com/ivpusic/golog"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 type testAppliable struct {

@@ -2,10 +2,11 @@ package neo
 
 import (
 	"bytes"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"net/http"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func makeTestCookie(key, value string) *http.Cookie {

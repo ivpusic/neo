@@ -65,9 +65,9 @@ type Ctx struct {
 func makeCtx(req *http.Request, w http.ResponseWriter) *Ctx {
 	request := makeRequest(req)
 	response := makeResponse(req, w)
-	// 404 - OK by default
+	// StatusNotFound - OK by default
 	// this can be overided by middlewares and handler fns
-	response.Status = 404
+	response.Status = http.StatusNotFound
 
 	ctx := &Ctx{
 		Req:  request,

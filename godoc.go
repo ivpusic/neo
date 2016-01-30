@@ -12,7 +12,7 @@
 //     app := neo.App()
 //
 //     app.Get("/", func(this *neo.Ctx) {
-//         this.Res.Text("I am Neo Programmer", 200)
+//         this.Res.Text("I am Neo Programmer", http.StatusOK)
 //     })
 //
 //     app.Start()

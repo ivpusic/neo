@@ -87,7 +87,7 @@ func (a *Application) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		if err == nil {
 			h := func(ctx *Ctx) (int, error) {
 				response.skipFlush()
-				return 200, response.serveFile(file)
+				return http.StatusOK, response.serveFile(file)
 			}
 
 			fn := compose(merge(a.middlewares, []appliable{handler(h)}))

@@ -62,7 +62,7 @@ func TestRouterMatch(t *testing.T) {
 
 		handler := func(this *Ctx) (int, error) {
 			counter++
-			return 200, nil
+			return http.StatusOK, nil
 		}
 
 		router.Use(fn)
@@ -127,7 +127,7 @@ func TestRegionMatch(t *testing.T) {
 
 	handler := func(this *Ctx) (int, error) {
 		counter++
-		return 200, nil
+		return http.StatusOK, nil
 	}
 
 	region.Use(fn)

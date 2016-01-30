@@ -38,7 +38,7 @@ func main() {
 	app.Templates("index.tpl")
 
 	app.Get("/", func(ctx *neo.Ctx) (int, error) {
-		return 200, ctx.Res.Tpl("index", struct {
+		return http.StatusOK, ctx.Res.Tpl("index", struct {
 			Name string
 		} {"Neo"})
 	})
