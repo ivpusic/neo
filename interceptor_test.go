@@ -35,7 +35,7 @@ func testMiddlewareWithoutDownstream(ctx *Ctx, next Next) {
 }
 
 func TestCompose(t *testing.T) {
-	var mdw middleware = testMiddleware
+	var mdw Middleware = testMiddleware
 
 	middlewares := []appliable{
 		mdw,
@@ -59,8 +59,8 @@ func TestCompose(t *testing.T) {
 }
 
 func TestComposeWithDownstream(t *testing.T) {
-	var downstream middleware = testMiddlewareWithDownstream
-	var normalMdw middleware = testMiddleware
+	var downstream Middleware = testMiddlewareWithDownstream
+	var normalMdw Middleware = testMiddleware
 
 	middlewares := []appliable{
 		normalMdw,
@@ -85,7 +85,7 @@ func TestComposeWithDownstream(t *testing.T) {
 }
 
 func TestComposeWithoutDownstream(t *testing.T) {
-	var noDownstream middleware = testMiddlewareWithoutDownstream
+	var noDownstream Middleware = testMiddlewareWithoutDownstream
 
 	middlewares := []appliable{
 		noDownstream,

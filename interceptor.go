@@ -15,9 +15,9 @@ func compose(fns []appliable) func(*Ctx) {
 
 // Representing middleware handler.
 // It accepts Neo Context and Next function for calling next middleware in chain.
-type middleware func(*Ctx, Next)
+type Middleware func(*Ctx, Next)
 
-func (m middleware) apply(ctx *Ctx, fns []appliable, current int) {
+func (m Middleware) apply(ctx *Ctx, fns []appliable, current int) {
 	m(ctx, func() {
 		current++
 		if len(fns) > current {
@@ -32,6 +32,6 @@ type interceptor struct {
 }
 
 // Adding new middleware into chain of middlewares.
-func (m *interceptor) Use(fn middleware) {
+func (m *interceptor) Use(fn Middleware) {
 	m.middlewares = append(m.middlewares, appliable(&fn))
 }
