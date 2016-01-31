@@ -59,6 +59,20 @@ type Ctx struct {
 
 	// general purpose session instance
 	Session Session
+
+	// list of errors happened in current http request
+	Errors []error
+}
+
+// Append error to list of errors for current http request.
+// This function can be used from any part of your code which has access to current context
+func (c *Ctx) Error(err error) {
+	c.Errors = append(c.Errors, err)
+}
+
+// HasErrors checks if we have errors in current http request
+func (c *Ctx) HasErrors() bool {
+	return len(c.Errors) > 0
 }
 
 // Will make default contextual data based on provided request and ResponseWriter
@@ -70,9 +84,10 @@ func makeCtx(req *http.Request, w http.ResponseWriter) *Ctx {
 	response.Status = 404
 
 	ctx := &Ctx{
-		Req:  request,
-		Res:  response,
-		Data: CtxData{},
+		Req:    request,
+		Res:    response,
+		Data:   CtxData{},
+		Errors: []error{},
 	}
 	ctx.InitEBus()
 

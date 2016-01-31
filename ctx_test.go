@@ -1,9 +1,11 @@
 package neo
 
 import (
-	"github.com/stretchr/testify/assert"
+	"errors"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestMakeCtx(t *testing.T) {
@@ -11,6 +13,22 @@ func TestMakeCtx(t *testing.T) {
 	w := httptest.NewRecorder()
 	ctx := makeCtx(req, w)
 	assert.NotNil(t, ctx)
+}
+
+func TestAddError(t *testing.T) {
+	req := makeTestHttpRequest(nil)
+	w := httptest.NewRecorder()
+	ctx := makeCtx(req, w)
+
+	ctx.Error(errors.New("my error 1"))
+	ctx.Error(errors.New("my error 2"))
+	assert.Equal(t, 2, len(ctx.Errors))
+	assert.True(t, ctx.HasErrors())
+
+	messages := []string{"my error 1", "my error 2"}
+	for i, m := range ctx.Errors {
+		assert.Equal(t, messages[i], m.Error())
+	}
 }
 
 func TestCtxReqRes(t *testing.T) {
