@@ -20,12 +20,12 @@ const (
 // `Hotreload` section
 ///////////////////////////////////////////////////////////////////
 
-type HotReload struct {
+type HotReloadConf struct {
 	Suffixes []string
 	Ignore   []string
 }
 
-type LoggerSettings struct {
+type LoggerConf struct {
 	Name  string
 	Level string
 }
@@ -34,7 +34,7 @@ type LoggerSettings struct {
 // `App` section
 ///////////////////////////////////////////////////////////////////
 
-type ApplicationSettings struct {
+type ApplicationConf struct {
 	Test         string
 	Args         []string
 	Addr         string
@@ -44,15 +44,15 @@ type ApplicationSettings struct {
 	MaxHeaderBytes int
 	// Default 10MB
 	MaxBodyBytes int64
-	Logger       LoggerSettings
+	Logger       LoggerConf
 }
 
 ///////////////////////////////////////////////////////////////////
 // `Neo` section
 ///////////////////////////////////////////////////////////////////
 
-type NeoSettings struct {
-	Logger LoggerSettings
+type NeoConf struct {
+	Logger LoggerConf
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -61,9 +61,9 @@ type NeoSettings struct {
 
 // Neo Application configuration
 type Conf struct {
-	Hotreload HotReload
-	App       ApplicationSettings
-	Neo       NeoSettings
+	Hotreload HotReloadConf
+	App       ApplicationConf
+	Neo       NeoConf
 }
 
 func (c *Conf) loadDefaults() {
@@ -87,7 +87,7 @@ func (c *Conf) Parse(path string) {
 	c.loadDefaults()
 
 	if path == "" {
-		log.Warn("Configuration file not provided!")
+		log.Info("Loaded configuration defaults")
 		return
 	}
 
