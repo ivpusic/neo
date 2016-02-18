@@ -2,10 +2,11 @@
 title: Go Web Framework
 email: pusic007@gmail.com
 description: Go Web Framework
-baseurl: "" # the subpath of your site, e.g. /blog/
+baseurl: ""
 godoc: "http://godoc.org/github.com/ivpusic/neo"
 github: "http://github.com/ivpusic/neo"
-url: "http://ivpusic.github.io/neo" # the base hostname & protocol for your site
+url: "http://ivpusic.github.io/neo"
+#url: "http://localhost:4000"
 twitter_username: ivpusic
 github_username:  ivpusic
 
