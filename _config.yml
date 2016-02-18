@@ -11,7 +11,7 @@ twitter_username: ivpusic
 github_username:  ivpusic
 
 # Build settings
-markdown: redcarpet
+markdown: kramdown
 
 highlighter: rouge
 
