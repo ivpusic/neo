@@ -49,7 +49,7 @@ Next you have to compile above templates. You have to say to Neo where he can fi
 
 Usually you do that from main function.
 
-```Go
+```go
 app.Templates(
     "/path/to/templates/*",
     "/another/path/to/templates/template.tpl",
@@ -60,7 +60,7 @@ As you can see you can provide multiple paths where your templates are located.
 
 Then in one of your route handlers you have to call template rendering in order to make HTML and return it to user.
 
-```Go
+```go
 app.Get("/", func(ctx *neo.Ctx) (int, error) {
     return 200, ctx.Res.Tpl("index", nil)
 })
@@ -68,7 +68,7 @@ app.Get("/", func(ctx *neo.Ctx) (int, error) {
 
 Second parameter of ``Tpl`` function is data which will be passed into template. So you can make instances of your structs and pass them as second argument. Something like this:
 
-```Go
+```go
 data := Person{"Some", "Person"}
 ctx.Res.Tpl("index", data)
 ```

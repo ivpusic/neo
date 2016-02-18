@@ -57,17 +57,17 @@ If you don't like configuration files, you can do it from Go code.
 
 Example (listen on 9000):
 
-```Go
+```go
 func main() {
     myapp := neo.App()
 
     myapp.Get("/", func(ctx *neo.Ctx) (int, error) {
         return 200, ctx.Res.Text("I am Neo Programmer")
     })
-    
+
     myapp.Conf.App.Addr = ":9000"
     myapp.Start()
 }
 ```
 
-For more information about `Conf` structure check out api docs here. [https://godoc.org/github.com/ivpusic/neo#Conf](https://godoc.org/github.com/ivpusic/neo#Conf) 
+For more information about `Conf` structure check out api docs here. [https://godoc.org/github.com/ivpusic/neo#Conf](https://godoc.org/github.com/ivpusic/neo#Conf)

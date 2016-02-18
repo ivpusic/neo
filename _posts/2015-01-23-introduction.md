@@ -10,7 +10,7 @@ Here we are assuming that you already have installed Neo and you have working Go
 This will be step by step tutorial. At the end we will show complete example.
 So first declare your package and import Neo.
 
-```Go
+```go
 package main
 
 import "github.com/ivpusic/neo"
@@ -18,7 +18,7 @@ import "github.com/ivpusic/neo"
 
 After that declare ``main`` function from where we will start our Web Server.
 
-```Go
+```go
 func main() {
     // Neo code will go here
 }
@@ -27,19 +27,19 @@ func main() {
 We have basic structure for now. Let's add some Neo code.
 You have to create Neo application instance using:
 
-```Go
+```go
 app := neo.App()
 ```
 You will use ``app`` variable to access many things from Neo. One of most important things in Neo is declaring routes. You define new route by calling corresponding function and by passing path and route handler implementation.
 
-```Go
+```go
 app.Get("/", func(ctx *neo.Ctx) (int, error) {
     return 200, ctx.Res.Text("I am Neo Programmer")
 })
 ```
 If you want to declare ``POST`` route to for example ``/some/route`` route, you can use something like this:
 
-```Go
+```go
 app.Post("/some/route", func(ctx *neo.Ctx) (int, error) {
     // your route handler implementation
 })
@@ -47,13 +47,13 @@ app.Post("/some/route", func(ctx *neo.Ctx) (int, error) {
 
 At the end of this simple introduction you have to start server on some address and port. We didn't provide any configuration yet, and default address is ``localhost:3000``.
 
-```Go
+```go
 app.Start()
 ```
 
 Complete example would be:
 
-```Go
+```go
 package main
 
 import (

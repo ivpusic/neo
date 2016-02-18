@@ -19,7 +19,7 @@ For example let's take following directory structure.
 
 We want to serve ```assets``` directory using Neo. Ok, easy.
 
-```Go
+```go
 app.Serve("/static", "./path/to/assets")
 ```
 
