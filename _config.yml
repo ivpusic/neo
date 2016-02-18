@@ -5,8 +5,8 @@ description: Go Web Framework
 baseurl: ""
 godoc: "http://godoc.org/github.com/ivpusic/neo"
 github: "http://github.com/ivpusic/neo"
-#url: "http://ivpusic.github.io/neo"
-url: "http://localhost:4000"
+url: "http://ivpusic.github.io/neo"
+#url: "http://localhost:4000"
 twitter_username: ivpusic
 github_username:  ivpusic
 
