@@ -18,7 +18,7 @@ func getTestApp(t *testing.T) *httpcheck.Checker {
 	app := App()
 	app.Templates("./testassets/templates/*")
 
-	withPrefix := app.RegionWithPrefix("/myprefix")
+	withPrefix := app.Region().Prefix("/myprefix")
 	withPrefix.Get("/testprefix", func(this *Ctx) (int, error) {
 		return 200, this.Res.Text("works with")
 	})

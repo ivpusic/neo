@@ -99,13 +99,13 @@ func TestMakeRegion(t *testing.T) {
 	router := &router{}
 	router.initRouter()
 
-	region := router.makeRegion("")
+	region := router.makeRegion()
 	assert.NotNil(t, region)
 	assert.NotNil(t, region.interceptor)
 	assert.NotNil(t, region.methods)
 	assert.Exactly(t, 1, router.regions.Len())
 
-	region = router.makeRegion("/prefix")
+	region = router.makeRegion().Prefix("/prefix")
 	assert.NotNil(t, region)
 	assert.NotNil(t, region.interceptor)
 	assert.NotNil(t, region.methods)
@@ -116,7 +116,7 @@ func TestMakeRegion(t *testing.T) {
 func TestRegionMatch(t *testing.T) {
 	router := &router{}
 	router.initRouter()
-	region := router.makeRegion("")
+	region := router.makeRegion()
 	counter := 0
 	testPath := "/some"
 
@@ -158,7 +158,7 @@ func TestRegionMatch(t *testing.T) {
 func TestRegionWithPrefixMatch(t *testing.T) {
 	router := &router{}
 	router.initRouter()
-	region := router.makeRegion("/myprefix")
+	region := router.makeRegion().Prefix("/myprefix")
 	counter := 0
 	testPath := "/myprefix/some"
 

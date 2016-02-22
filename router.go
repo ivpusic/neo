@@ -48,9 +48,13 @@ type router struct {
 }
 
 type Region struct {
-	prefix string
 	*interceptor
 	*methods
+}
+
+func (r *Region) Prefix(prefix string) *Region {
+	r.methods.prefix = prefix
+	return r
 }
 
 func (r *router) initRouter() {
@@ -63,13 +67,11 @@ func (r *router) initRouter() {
 }
 
 // making new region instance
-func (r *router) makeRegion(prefix string) *Region {
-	m := &methods{
-		prefix: prefix,
-	}
+func (r *router) makeRegion() *Region {
+	m := &methods{}
 	i := &interceptor{[]appliable{}}
 
-	region := &Region{prefix, i, m.init()}
+	region := &Region{i, m.init()}
 	r.regions.PushBack(region)
 
 	return region
