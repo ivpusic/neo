@@ -15,6 +15,21 @@ func (s *Static) init() {
 	s.serving = map[string]string{}
 }
 
+// If path exists, and it is not directory it can be served.
+// Othervise path cannot be served.
+func (s *Static) canBeServed(path string) bool {
+	stat, err := os.Stat(path)
+	if err != nil {
+		log.Debugf("Error while calling os.Stat for path %s. Error: %s", path, err.Error())
+	} else {
+		if !stat.IsDir() {
+			return true
+		}
+	}
+
+	return false
+}
+
 // Trying to find file from passed url.
 // If you have called ``app.Assert("/some", "./dir")``, then if url is ``/some/path/file.txt``,
 // then method will look for file at ``./dir/path/file.txt``.
@@ -37,10 +52,10 @@ func (s *Static) match(url string) (string, error) {
 			path := v + file
 			log.Debug("found possible result. Path: " + path)
 
-			if _, err := os.Stat(path); err == nil {
-				// if !stat.IsDir() {
+			if s.canBeServed(path) {
 				return path, nil
-				// }
+			} else if s.canBeServed(path + "/index.html") {
+				return path + "/index.html", nil
 			}
 		}
 	}
