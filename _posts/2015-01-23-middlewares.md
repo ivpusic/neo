@@ -34,7 +34,7 @@ Also good usecase can be logging all traffic on your Web Application.
 
 ```go
 app.Use(func (ctx *neo.Ctx, next neo.Next) {
-    start = time.Now()
+    start := time.Now()
     fmt.Printf("--> [Req] %s to %s", ctx.Req.Method, ctx.Req.URL.Path)
 
     next()
