@@ -159,7 +159,11 @@ func (a *Application) Templates(templates ...string) {
 
 // Making new region instance. You can create multiple regions.
 func (a *Application) Region() *Region {
-	return a.makeRegion()
+	return a.makeRegion("")
+}
+
+func (a *Application) RegionWithPrefix(prefix string) *Region {
+	return a.makeRegion(prefix)
 }
 
 ///////////////////////////////////////////////////////////////////

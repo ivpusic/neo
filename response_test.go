@@ -18,6 +18,16 @@ func getTestApp(t *testing.T) *httpcheck.Checker {
 	app := App()
 	app.Templates("./testassets/templates/*")
 
+	withPrefix := app.RegionWithPrefix("/myprefix")
+	withPrefix.Get("/testprefix", func(this *Ctx) (int, error) {
+		return 200, this.Res.Text("works with")
+	})
+
+	withoutPrefix := app.Region()
+	withoutPrefix.Get("/noprefix/withoutprefix", func(this *Ctx) (int, error) {
+		return 200, this.Res.Text("works without")
+	})
+
 	app.Get("/json", func(this *Ctx) (int, error) {
 		return 200, this.Res.Json(&testPerson{"Some", 30})
 	})
@@ -214,4 +224,20 @@ func TestRouteNotFound(t *testing.T) {
 	server.Test("PUT", "/unknown_route").
 		Check().
 		HasStatus(404)
+}
+
+func TestRegionWithPrefix(t *testing.T) {
+	server := getTestApp(t)
+	server.Test("GET", "/myprefix/testprefix").
+		Check().
+		HasStatus(200).
+		HasString("works with")
+}
+
+func TestRegionWithoutPrefix(t *testing.T) {
+	server := getTestApp(t)
+	server.Test("GET", "/noprefix/withoutprefix").
+		Check().
+		HasStatus(200).
+		HasString("works without")
 }

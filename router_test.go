@@ -1,11 +1,12 @@
 package neo
 
 import (
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func makeReq(path, method string) *Request {
@@ -98,23 +99,24 @@ func TestMakeRegion(t *testing.T) {
 	router := &router{}
 	router.initRouter()
 
-	region := router.makeRegion()
+	region := router.makeRegion("")
 	assert.NotNil(t, region)
 	assert.NotNil(t, region.interceptor)
 	assert.NotNil(t, region.methods)
 	assert.Exactly(t, 1, router.regions.Len())
 
-	region = router.makeRegion()
+	region = router.makeRegion("/prefix")
 	assert.NotNil(t, region)
 	assert.NotNil(t, region.interceptor)
 	assert.NotNil(t, region.methods)
+	assert.Equal(t, "/prefix", region.methods.prefix)
 	assert.Exactly(t, 2, router.regions.Len())
 }
 
 func TestRegionMatch(t *testing.T) {
 	router := &router{}
 	router.initRouter()
-	region := router.makeRegion()
+	region := router.makeRegion("")
 	counter := 0
 	testPath := "/some"
 
@@ -149,6 +151,48 @@ func TestRegionMatch(t *testing.T) {
 	assert.Equal(t, 9, counter)
 
 	route, err = router.match(makeReq("/some/unknown/path", GET))
+	assert.NotNil(t, err)
+	assert.Nil(t, route)
+}
+
+func TestRegionWithPrefixMatch(t *testing.T) {
+	router := &router{}
+	router.initRouter()
+	region := router.makeRegion("/myprefix")
+	counter := 0
+	testPath := "/myprefix/some"
+
+	fn := func(this *Ctx, next Next) {
+		log.Debug("middleware interceptor handler called")
+		counter++
+		next()
+		counter++
+	}
+
+	handler := func(this *Ctx) (int, error) {
+		counter++
+		return 200, nil
+	}
+
+	region.Use(fn)
+	region.Use(fn)
+	_route := region.Get("/some", handler)
+	_route.Use(fn)
+	_route.Use(fn)
+
+	router.flush()
+
+	route, err := router.match(makeReq(testPath, GET))
+	assert.Nil(t, err)
+
+	req := makeTestHttpRequest(nil)
+	w := httptest.NewRecorder()
+	ctx := makeCtx(req, w)
+
+	route.fnChain(ctx)
+	assert.Equal(t, 9, counter)
+
+	route, err = router.match(makeReq("/some", GET))
 	assert.NotNil(t, err)
 	assert.Nil(t, route)
 }

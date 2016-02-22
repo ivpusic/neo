@@ -24,6 +24,7 @@ var methodsSlice = []string{GET, POST, PUT, DELETE, OPTIONS, HEAD}
 type routemap map[string][]Route
 
 type methods struct {
+	prefix string
 	routes routemap
 }
 
@@ -41,7 +42,7 @@ func (m *methods) init() *methods {
 }
 
 func (m *methods) add(path string, fn handler, method string) *Route {
-	route := Route{&interceptor{[]appliable{}}, fn, urlregex.Pattern(path), nil}
+	route := Route{&interceptor{[]appliable{}}, fn, urlregex.Pattern(m.prefix + path), nil}
 	m.routes[method] = append(m.routes[method], route)
 
 	return &route
