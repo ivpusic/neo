@@ -76,7 +76,7 @@ func (r *Response) Tpl(name string, data interface{}) error {
 		return err
 	}
 
-	r.skipFlush()
+	r.SkipFlush()
 	return nil
 }
 
@@ -164,7 +164,7 @@ func (r *Response) sendFile() {
 // If it is called, Neo will skip calling  ResponseWriter's write method.
 // Usecase for this is when we render HTML template for example, because Neo uses Go html/template for
 // writing to ResponseWriter.
-func (r *Response) skipFlush() {
+func (r *Response) SkipFlush() {
 	r._skipFlush = true
 }
 
