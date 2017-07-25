@@ -35,6 +35,7 @@ type Route struct {
 	fn      handler
 	regex   urlregex.UrlRegex
 	fnChain func(*Ctx)
+	path    string
 }
 
 ///////////////////////////////////////////////////////////////////

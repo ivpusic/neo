@@ -113,6 +113,7 @@ func (a *Application) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
 		compose(merge(a.middlewares, []appliable{handler(h)}))(ctx)
 	} else {
+		ctx.Req.ResolvedRoute = route.path
 		route.fnChain(ctx)
 	}
 }

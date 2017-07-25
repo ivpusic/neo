@@ -9,7 +9,8 @@ import (
 // Wrapped http.Request. It contains utility methods for dealing with content of incomming http.Request instance.
 type Request struct {
 	*http.Request
-	Params UrlParam
+	Params        UrlParam
+	ResolvedRoute string
 }
 
 // Make cookie map.

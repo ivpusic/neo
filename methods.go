@@ -42,7 +42,7 @@ func (m *methods) init() *methods {
 }
 
 func (m *methods) add(path string, fn handler, method string) *Route {
-	route := Route{&interceptor{[]appliable{}}, fn, urlregex.Pattern(m.prefix + path), nil}
+	route := Route{&interceptor{[]appliable{}}, fn, urlregex.Pattern(m.prefix + path), nil, path}
 	m.routes[method] = append(m.routes[method], route)
 
 	return &route
