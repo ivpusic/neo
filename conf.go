@@ -5,7 +5,7 @@ import (
 
 	"net/http"
 
-	"github.com/ivpusic/toml"
+	"github.com/BurntSushi/toml"
 )
 
 const (
