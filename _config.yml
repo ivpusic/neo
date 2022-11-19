@@ -3,9 +3,9 @@ title: Go Web Framework
 email: pusic007@gmail.com
 description: Go Web Framework
 baseurl: ""
-godoc: "http://godoc.org/github.com/ivpusic/neo"
-github: "http://github.com/ivpusic/neo"
-url: "http://ivpusic.github.io/neo"
+godoc: "https://godoc.org/github.com/ivpusic/neo"
+github: "https://github.com/ivpusic/neo"
+url: "https://ivpusic.github.io/neo"
 #url: "http://localhost:4000"
 twitter_username: ivpusic
 github_username:  ivpusic
